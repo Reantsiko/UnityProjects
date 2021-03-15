@@ -1,0 +1,1 @@
+﻿public enum Difficulty { very_easy, easy, normal, hard, very_hard, impossible }
