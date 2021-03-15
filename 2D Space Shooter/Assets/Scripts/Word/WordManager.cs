@@ -10,7 +10,7 @@ public class WordManager : MonoBehaviour
     public bool hasActiveWord;
     public Word activeWord;
 
-    private void Start()
+    private void Awake()
     {
         wordSpawner = GetComponent<WordSpawner>();
     }
@@ -19,7 +19,7 @@ public class WordManager : MonoBehaviour
     {
         var wordDisplay = wordSpawner.SpawnWord(true, moveTarget);
         Word word = new Word(WordGenerator.GetRandomMovementWord(), wordDisplay, moveTarget, true);
-        Debug.Log(word.word);
+        //Debug.Log(word.word);
         words.Add(word);
         wordDisplay.SetWord(word.word, word);
     }

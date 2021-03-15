@@ -12,7 +12,6 @@ public class WordInput : MonoBehaviour
     {
         foreach (var letter in Input.inputString)
         {
-            Debug.Log($"Typed: {letter}");
             wordManager.TypeLetter(letter);
         }
     }

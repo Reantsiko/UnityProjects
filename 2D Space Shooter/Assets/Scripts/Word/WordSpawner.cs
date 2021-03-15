@@ -18,7 +18,6 @@ public class WordSpawner : MonoBehaviour
             wordObj = Instantiate(moveWordPrefab, spawnPos, Quaternion.identity, worldCanvas);
 
         var wordDisplay = wordObj.GetComponent<WordDisplay>();
-
         return wordDisplay;
     }
 }

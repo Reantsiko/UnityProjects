@@ -34,8 +34,8 @@ public class MoveField : MonoBehaviour
             {
                 moveableField.SetGridObject(x, y, moveableField.GetCenterOfCell2D(x, y));
                 wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));
-                /*var obj = new GridObject(CreateTextField(textSize), moveableField.GetCenterOfCell2D(x, y), string.Empty);
-                moveableField.SetGridObject(x, y, obj);*/
+                //var obj = new GridObject(CreateTextField(textSize), moveableField.GetCenterOfCell2D(x, y), string.Empty);
+                //moveableField.SetGridObject(x, y, obj);
             }
     }
 }

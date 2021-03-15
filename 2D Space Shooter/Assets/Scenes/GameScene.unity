@@ -2085,6 +2085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   words: []
   possibleWords: []
+  wordSpawner: {fileID: 0}
   hasActiveWord: 0
   activeWord:
     word: 
