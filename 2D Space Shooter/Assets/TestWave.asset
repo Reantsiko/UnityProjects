@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87eedd9663046f46baaaf6acee630c3, type: 3}
+  m_Name: TestWave
+  m_EditorClassIdentifier: 
+  enemiesPrefab:
+  - {fileID: 6133371033160741253, guid: d19b4befc968b59419c162f9e94608fd, type: 3}
+  pathPrefab: {fileID: 1035023936262461442, guid: f64b4e0fc90d8f74a9300a09e8b784f9,
+    type: 3}
+  timeBetweenSpawns: 0.5
+  spawnRandomFactor: 0.3
+  moveSpeed: 2
+  numberOfEnemies: 5
+  difficulty: 1
