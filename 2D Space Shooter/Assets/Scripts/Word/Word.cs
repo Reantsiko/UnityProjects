@@ -16,6 +16,14 @@ public class Word
         display.SetWord(word, this);
         typeIndex = 0;
     }
+    public Word(string _word, WordDisplay _wordDisplay, bool _isMovement = false)
+    {
+        word = _word;
+        display = _wordDisplay;
+        isMovement = _isMovement;
+        display.SetWord(word, this);
+        typeIndex = 0;
+    }
 
     public char GetNextLetter()
     {

@@ -19,9 +19,15 @@ public class WordManager : MonoBehaviour
     {
         var wordDisplay = wordSpawner.SpawnWord(true, moveTarget);
         Word word = new Word(WordGenerator.GetRandomMovementWord(), wordDisplay, moveTarget, true);
-        //Debug.Log(word.word);
         words.Add(word);
         wordDisplay.SetWord(word.word, word);
+    }
+
+    public void AddEnemyWord(WordDisplay display)
+    {
+        Word word = new Word(WordGenerator.GetRandomWord(), display);
+        words.Add(word);
+        display.SetWord(word.word, word);
     }
 
     public void TypeLetter(char letter)

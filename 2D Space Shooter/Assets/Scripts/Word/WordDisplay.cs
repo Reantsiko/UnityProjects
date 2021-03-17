@@ -3,14 +3,13 @@ using TMPro;
 public class WordDisplay : MonoBehaviour
 {
     public TMP_Text text = null;
-    public float minMoveSpeed = 1.5f;
-    public float maxMoveSpeed = 4f;
 
     public WordManager wordManager;
     public Word word;
     private void Awake()
     {
-        text = GetComponent<TMP_Text>();
+        if (text == null)
+            text = GetComponent<TMP_Text>();
         wordManager = FindObjectOfType<WordManager>();
     }
 
