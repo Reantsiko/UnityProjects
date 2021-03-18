@@ -9,16 +9,12 @@ public class EnemyPathing : MonoBehaviour
     [SerializeField] private int waypointIndex = 0;
 
     public void SetWaveConfiguration(WaveConfiguration toSet) => waveConfig = toSet;
-
     private void Start()
     {
         waypoints = waveConfig.GetWayPoints();
         transform.position = waypoints[waypointIndex].position;
     }
-    private void Update()
-    {
-        MoveToNextWaypoint();
-    }
+    private void Update() => MoveToNextWaypoint();
     private void MoveToNextWaypoint()
     {
         if (transform.position == waypoints[waypointIndex].position)

@@ -33,13 +33,15 @@ public class Word
     public void TypeLetter()
     {
         typeIndex++;
-        display.TypeLetter(word, typeIndex);
+        if (display != null)
+            display.TypeLetter(word, typeIndex);
     }
 
     public void ResetWord()
     {
         typeIndex = 0;
-        display.TypeLetter(word, typeIndex);
+        if (display != null)
+            display.TypeLetter(word, typeIndex);
     }
 
     public bool WordTyped()
@@ -49,8 +51,16 @@ public class Word
         if (wordTyped)
         {
             if (isMovement)
+            {
                 PlayerMovement.instance.SetMoveTarget(moveTarget);
-            display.RemoveWord();
+                display.RemoveWord();
+            }
+            else
+            {
+                if (display)
+                    PlayerAttack.instance.Fire(display.transform);
+            }
+            
         }
 
         return wordTyped;

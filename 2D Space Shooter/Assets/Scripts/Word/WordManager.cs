@@ -6,9 +6,9 @@ public class WordManager : MonoBehaviour
 {
     public List<Word> words = new List<Word>();
     public List<Word> possibleWords = new List<Word>();
-    private WordSpawner wordSpawner;
-    public bool hasActiveWord;
-    public Word activeWord;
+    private WordSpawner wordSpawner = null;
+    public bool hasActiveWord = false;
+    public Word activeWord = null;
 
     private void Awake()
     {
@@ -76,6 +76,8 @@ public class WordManager : MonoBehaviour
         var temp = new List<Word>();
         foreach (var word in possibleWords)
         {
+            if (word == null)
+                continue;
             if (word.GetNextLetter() == letter)
             {
                 word.TypeLetter();
