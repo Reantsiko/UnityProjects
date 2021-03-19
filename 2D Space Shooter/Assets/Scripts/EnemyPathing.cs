@@ -21,11 +21,14 @@ public class EnemyPathing : MonoBehaviour
             waypointIndex++;
         if (waypointIndex <= waypoints.Count - 1)
         {
-            float movement = waveConfig.GetMoveSpeed()* Time.deltaTime;
+            float movement = waveConfig.GetMoveSpeed() * Time.deltaTime;
             Vector2 wp = waypoints[waypointIndex].position;
             transform.position = Vector2.MoveTowards(transform.position, wp, movement);
         }
         else
+        {
+            GetComponent<WordDisplay>().RemoveWordFromList();
             Destroy(gameObject);
+        }
     }
 }

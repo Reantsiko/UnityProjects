@@ -5,6 +5,8 @@ public class Word
     public string word;
     public bool isMovement;
     public Vector3 moveTarget;
+    public bool wordTyped;
+    public int scorePerLetter;
     [SerializeField] private int typeIndex;
     [SerializeField] private WordDisplay display;
     public Word(string _word, WordDisplay _wordDisplay, Vector3 _moveTarget, bool _isMovement = false)
@@ -13,25 +15,27 @@ public class Word
         display = _wordDisplay;
         isMovement = _isMovement;
         moveTarget = _moveTarget;
+        
+        wordTyped = false;
         display.SetWord(word, this);
         typeIndex = 0;
     }
-    public Word(string _word, WordDisplay _wordDisplay, bool _isMovement = false)
+    public Word(string _word, int _scorePerLetter, WordDisplay _wordDisplay, bool _isMovement = false)
     {
         word = _word;
         display = _wordDisplay;
+        scorePerLetter = _scorePerLetter;
         isMovement = _isMovement;
         display.SetWord(word, this);
         typeIndex = 0;
     }
 
-    public char GetNextLetter()
-    {
-        return word[typeIndex];
-    }
+    public char GetNextLetter() => word[typeIndex];
 
     public void TypeLetter()
     {
+        if (wordTyped) return;
+
         typeIndex++;
         if (display != null)
             display.TypeLetter(word, typeIndex);
@@ -39,6 +43,8 @@ public class Word
 
     public void ResetWord()
     {
+        if (wordTyped) return;
+
         typeIndex = 0;
         if (display != null)
             display.TypeLetter(word, typeIndex);
@@ -46,7 +52,9 @@ public class Word
 
     public bool WordTyped()
     {
-        bool wordTyped = typeIndex >= word.Length;
+        if (wordTyped) return wordTyped;
+
+        wordTyped = typeIndex >= word.Length;
 
         if (wordTyped)
         {
@@ -57,6 +65,7 @@ public class Word
             }
             else
             {
+                GameManager.instance.UpdateScore(scorePerLetter * typeIndex);
                 if (display)
                     PlayerAttack.instance.Fire(display.transform);
             }
@@ -64,5 +73,13 @@ public class Word
         }
 
         return wordTyped;
+    }
+
+    public void AttackPlayer()
+    {
+        if (wordTyped) return;
+
+        if (display != null)
+            display.AttackPlayer();
     }
 }

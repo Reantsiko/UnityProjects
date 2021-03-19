@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class WordManager : MonoBehaviour
 {
-    public List<Word> words = new List<Word>();
-    public List<Word> possibleWords = new List<Word>();
+    [Tooltip("The maximum of enemy units that can attack in case of multiple targets having the same word")]
+    public int maxAttacks = 3;
+    public int scorePerLetter = 10;
+    private bool hasActiveWord = false;
+    private Word activeWord = null;
+    private List<Word> words = new List<Word>();
+    private List<Word> possibleWords = new List<Word>();
     private WordSpawner wordSpawner = null;
-    public bool hasActiveWord = false;
-    public Word activeWord = null;
 
     private void Awake()
     {
         wordSpawner = GetComponent<WordSpawner>();
     }
+
+    public void RemoveWord(Word toRemove) => words.Remove(toRemove);
 
     public void AddMovementWord(Vector3 moveTarget)
     {
@@ -25,7 +30,7 @@ public class WordManager : MonoBehaviour
 
     public void AddEnemyWord(WordDisplay display)
     {
-        Word word = new Word(WordGenerator.GetRandomWord(), display);
+        Word word = new Word(WordGenerator.GetRandomWord(), scorePerLetter, display);
         words.Add(word);
         display.SetWord(word.word, word);
     }
@@ -94,8 +99,17 @@ public class WordManager : MonoBehaviour
             }
         }
 
+        bool fireAtPlayer = temp.Count == possibleWords.Count;
+        int attacks = 0;
         foreach (var word in temp)
+        {
+            if (fireAtPlayer && !word.isMovement && !word.wordTyped && attacks < maxAttacks)
+            {
+                attacks++;
+                word.AttackPlayer();
+            }
             possibleWords.Remove(word);
+        }
     }
 
     private void CheckForRemovalWord()

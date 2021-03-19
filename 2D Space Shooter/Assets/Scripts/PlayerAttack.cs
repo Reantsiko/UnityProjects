@@ -18,7 +18,7 @@ public class PlayerAttack : MonoBehaviour
         if (firePosition == null) return;
 
         var laser = Instantiate(laserPrefab, firePosition.position, Quaternion.identity);
-        var laserComponent = laser.GetComponent<Laser>();
+        var laserComponent = laser.GetComponent<PlayerLaser>();
         laserComponent.target = target;
     }
 }

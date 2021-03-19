@@ -24,4 +24,18 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.value = currentHealthPoints;
         healthImage.color = healthGradient.Evaluate(currentHealthPoints);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("EnemyLaser"))
+        {
+            var enemyLaser = collision.GetComponent<EnemyLaser>();
+            if (enemyLaser)
+            {
+                currentHealthPoints -= enemyLaser.damage;
+                UpdateHealthBar();
+                Destroy(enemyLaser.gameObject);
+            }
+        }
+    }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour
+public class PlayerLaser : MonoBehaviour
 {
     public Transform target = null;
     public float speed = 5f;

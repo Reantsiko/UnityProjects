@@ -4,18 +4,22 @@ using UnityEngine;
 using TMPro;
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance = null;
+    public Transform playerTransform = null;
     [SerializeField] private Difficulty difficulty = Difficulty.easy;
     [SerializeField] private TMP_Text scoreText = null;
-    
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int playerScore;
+
+    private void Awake()
     {
-        
+        instance = this;
+        playerScore = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateScore(int scoreChange)
     {
-        
+        playerScore += scoreChange;
+        if (scoreText != null)
+            scoreText.text = playerScore.ToString();
     }
 }
