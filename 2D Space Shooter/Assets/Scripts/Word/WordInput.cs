@@ -10,9 +10,7 @@ public class WordInput : MonoBehaviour
 
     void Update()
     {
-        foreach (var letter in Input.inputString)
-        {
+        foreach (var letter in Input.inputString) 
             wordManager.TypeLetter(letter);
-        }
     }
 }

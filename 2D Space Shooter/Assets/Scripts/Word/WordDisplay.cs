@@ -19,21 +19,8 @@ public class WordDisplay : MonoBehaviour
         text.text = $"<color=red>{toSet}</color>";
         word = _word;
     }
-
-    public void TypeLetter(string word, int index)
-    {
-        text.text = $"<color=green>{word.Substring(0, index)}</color><color=red>{word.Substring(index)}</color>";
-    }
-
-    public void RemoveWordFromList()
-    {
-        wordManager.RemoveWord(word);
-    }
-
-    public void AttackPlayer()
-    {
-        enemyAttack.FireAtPlayer();
-    }
-
+    public void TypeLetter(string word, int index) => text.text = $"<color=green>{word.Substring(0, index)}</color><color=red>{word.Substring(index)}</color>";
+    public void RemoveWordFromList() => wordManager.RemoveWord(word);
+    public void AttackPlayer() => enemyAttack.FireAtPlayer();
     public void RemoveWord() => Destroy(gameObject);
 }

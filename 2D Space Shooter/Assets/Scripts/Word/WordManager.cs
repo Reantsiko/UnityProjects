@@ -13,10 +13,7 @@ public class WordManager : MonoBehaviour
     private List<Word> possibleWords = new List<Word>();
     private WordSpawner wordSpawner = null;
 
-    private void Awake()
-    {
-        wordSpawner = GetComponent<WordSpawner>();
-    }
+    private void Awake() => wordSpawner = GetComponent<WordSpawner>();
 
     public void RemoveWord(Word toRemove) => words.Remove(toRemove);
 
@@ -78,7 +75,7 @@ public class WordManager : MonoBehaviour
 
     private void IterateOverPossibleWords(char letter)
     {
-        var temp = new List<Word>();
+        var wordsToRemove = new List<Word>();
         foreach (var word in possibleWords)
         {
             if (word == null)
@@ -88,20 +85,24 @@ public class WordManager : MonoBehaviour
                 word.TypeLetter();
                 if (word.WordTyped())
                 {
-                    temp.Add(word);
+                    wordsToRemove.Add(word);
                     words.Remove(word);
                 }
             }
             else
             {
                 word.ResetWord();
-                temp.Add(word);
+                wordsToRemove.Add(word);
             }
         }
+        AttackPlayerOnError(wordsToRemove);
+    }
 
-        bool fireAtPlayer = temp.Count == possibleWords.Count;
+    private void AttackPlayerOnError(List<Word> wordsToRemove)
+    {
+        bool fireAtPlayer = wordsToRemove.Count == possibleWords.Count;
         int attacks = 0;
-        foreach (var word in temp)
+        foreach (var word in wordsToRemove)
         {
             if (fireAtPlayer && !word.isMovement && !word.wordTyped && attacks < maxAttacks)
             {

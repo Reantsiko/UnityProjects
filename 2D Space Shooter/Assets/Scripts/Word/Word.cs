@@ -69,9 +69,7 @@ public class Word
                 if (display)
                     PlayerAttack.instance.Fire(display.transform);
             }
-            
         }
-
         return wordTyped;
     }
 
