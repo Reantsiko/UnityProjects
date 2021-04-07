@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(this.gameObject);
         playerScore = 0;
     }
 
@@ -21,5 +22,11 @@ public class GameManager : MonoBehaviour
         playerScore += scoreChange;
         if (scoreText != null)
             scoreText.text = playerScore.ToString();
+    }
+
+    public void ResetSettings(Difficulty toSet)
+    {
+        playerScore = 0;
+        difficulty = toSet;
     }
 }
