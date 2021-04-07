@@ -27,7 +27,7 @@ public class WordManager : MonoBehaviour
 
     public void AddEnemyWord(WordDisplay display)
     {
-        Word word = new Word(WordGenerator.GetRandomWord(), scorePerLetter, display);
+        Word word = new Word(WordLists.instance.GetRandomWord(), scorePerLetter, display);
         words.Add(word);
         display.SetWord(word.word, word);
     }

@@ -11,7 +11,7 @@ public class WaveConfiguration : ScriptableObject
     [SerializeField] private float spawnRandomFactor = 0.3f;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private int numberOfEnemies = 1;
-    [SerializeField] private Difficulty difficulty = Difficulty.easy;
+    [SerializeField] private Difficulty difficulty = Difficulty.Easy;
 
     private GameObject enemyPrefab;
 

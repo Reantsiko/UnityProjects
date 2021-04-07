@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     public Transform playerTransform = null;
-    [SerializeField] private Difficulty difficulty = Difficulty.easy;
+    [SerializeField] public Difficulty difficulty = Difficulty.Easy;
     [SerializeField] private TMP_Text scoreText = null;
     [SerializeField] private int playerScore;
 
