@@ -10,9 +10,9 @@ public class WordManager : MonoBehaviour
     public int scorePerLetter = 10;
     [SerializeField] private TMP_Text comboText = null;
     private bool hasActiveWord = false;
-    [SerializeField] private Word activeWord = null;
-    [SerializeField] private List<Word> words = new List<Word>();
-    [SerializeField] private List<Word> possibleWords = new List<Word>();
+    private Word activeWord = null;
+    private List<Word> words = new List<Word>();
+    private List<Word> possibleWords = new List<Word>();
     private WordSpawner wordSpawner = null;
     private int combo = 0;
 
@@ -65,6 +65,7 @@ public class WordManager : MonoBehaviour
             activeWord = null;
             hasActiveWord = false;
             UpdateComboText(true);
+            TypeLetter(letter);
         }
     }
 
@@ -89,6 +90,9 @@ public class WordManager : MonoBehaviour
         typedWords.ForEach(w => wordsToRemove.Add(w));
         wordsToRemove.ForEach(w => w?.ResetWord());
         AttackPlayerOnError(wordsToRemove);
+
+        if (wordsToType.Count() == 0 && possibleWords.Count() == 0)
+            TypeLetter(letter);
     }
 
     private void AttackPlayerOnError(List<Word> wordsToRemove)

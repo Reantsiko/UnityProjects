@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using System.Linq;
 public class WordInput : MonoBehaviour
 {
     private WordManager wordManager;
 
     private void Start() => wordManager = GetComponent<WordManager>();
 
-    void Update()
-    {
-        foreach (var letter in Input.inputString) 
-            wordManager.TypeLetter(letter);
-    }
+    void Update() => Input.inputString.ToList().ForEach(l => wordManager.TypeLetter(l));
 }
