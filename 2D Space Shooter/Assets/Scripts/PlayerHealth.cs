@@ -12,6 +12,8 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealthPoints = Mathf.Clamp(currentHealthPoints + change, 0f, 1f);
         UpdateHealthBar();
+        if (currentHealthPoints <= 0f)
+            GameManager.instance.SetRespawning(true);
     }
 
     private void Start()
@@ -32,8 +34,7 @@ public class PlayerHealth : MonoBehaviour
             var enemyLaser = collision.GetComponent<EnemyLaser>();
             if (enemyLaser)
             {
-                currentHealthPoints -= enemyLaser.damage;
-                UpdateHealthBar();
+                TakeOrHealDamage(-enemyLaser.damage);
                 Destroy(enemyLaser.gameObject);
             }
         }

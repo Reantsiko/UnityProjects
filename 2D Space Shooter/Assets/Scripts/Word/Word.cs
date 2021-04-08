@@ -30,7 +30,7 @@ public class Word
         typeIndex = 0;
     }
 
-    public char GetNextLetter() => typeIndex < word.Length ? word[typeIndex] : ' ';
+    public char GetNextLetter() => word[typeIndex];
 
     public void TypeLetter()
     {
@@ -50,7 +50,7 @@ public class Word
             display.TypeLetter(word, typeIndex);
     }
 
-    public bool WordTyped()
+    public bool WordTyped(int currentCombo)
     {
         if (wordTyped) return wordTyped;
 
@@ -65,7 +65,7 @@ public class Word
             }
             else
             {
-                GameManager.instance.UpdateScore(scorePerLetter * typeIndex);
+                GameManager.instance.UpdateScore(scorePerLetter * typeIndex + currentCombo);
                 if (display)
                     PlayerAttack.instance.Fire(display.transform);
             }

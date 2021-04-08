@@ -48,7 +48,7 @@ public class WordManager : MonoBehaviour
             if (possibleWords.Count == 1)
                 SetActiveWord();
         }
-        if (hasActiveWord && activeWord.WordTyped())
+        if (hasActiveWord && activeWord.WordTyped(combo))
             CheckForRemovalWord();
     }
     private void HasActiveWord(char letter)
@@ -86,7 +86,7 @@ public class WordManager : MonoBehaviour
             Combo();
 
         wordsToType.ForEach(w => w?.TypeLetter());
-        var typedWords = wordsToType.Where(w => w != null ? w.WordTyped() : true).ToList();
+        var typedWords = wordsToType.Where(w => w != null ? w.WordTyped(combo) : true).ToList();
         typedWords.ForEach(w => wordsToRemove.Add(w));
         wordsToRemove.ForEach(w => w?.ResetWord());
         AttackPlayerOnError(wordsToRemove);

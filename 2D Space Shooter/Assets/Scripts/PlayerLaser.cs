@@ -12,6 +12,9 @@ public class PlayerLaser : MonoBehaviour
         if (target == null)
             Destroy(gameObject);
         transform.position = Vector3.MoveTowards(transform.position, target == null ? Vector3.zero : target.position, speed * Time.deltaTime);
+
+        if (transform.position.y >= 20f || transform.position.y <= -7f)
+            Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

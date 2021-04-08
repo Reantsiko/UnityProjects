@@ -427,8 +427,10 @@ MonoBehaviour:
     isMovement: 0
     moveTarget: {x: 0, y: 0, z: 0}
     wordTyped: 0
+    scorePerLetter: 0
     typeIndex: 0
     display: {fileID: 159728618}
+  enemyAttack: {fileID: 0}
 --- !u!61 &2038489843129119368
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -470,3 +472,5 @@ MonoBehaviour:
   firePosition: {fileID: 3427401214869262044}
   laserPrefab: {fileID: 6098133262748962048, guid: 8e29b9c380d6893448a8da11bee1766d,
     type: 3}
+  minAttackWaitTime: 1
+  maxAttackWaitTime: 5

@@ -8,7 +8,16 @@ public class GameManager : MonoBehaviour
     public Transform playerTransform = null;
     [SerializeField] public Difficulty difficulty = Difficulty.Easy;
     [SerializeField] private TMP_Text scoreText = null;
-    [SerializeField] private int playerScore;
+    
+    [Header("Difficulty changer")]
+    [SerializeField] private int easyScore = 1000;
+    [SerializeField] private int normalScore = 2000;
+    [SerializeField] private int hardScore = 3000;
+    [SerializeField] private int veryHardScore = 4000;
+    [SerializeField] private int impossibleScore = 5000;
+
+    private int playerScore;
+    private bool respawning = false;
 
     private void Awake()
     {
@@ -20,8 +29,39 @@ public class GameManager : MonoBehaviour
     public void UpdateScore(int scoreChange)
     {
         playerScore += scoreChange;
+        var scoreAsText = playerScore.ToString();
         if (scoreText != null)
-            scoreText.text = playerScore.ToString();
+        {
+            if (scoreAsText.Length < 13)
+                scoreText.text = scoreAsText.PadLeft(13, '0');
+            else
+                scoreText.text = scoreAsText;
+        }
+        DifficultyIncrease();
+    }
+
+    private void DifficultyIncrease()
+    {
+        switch(difficulty)
+        {
+            case Difficulty.VeryEasy:
+                difficulty = playerScore >= easyScore ? Difficulty.Easy : difficulty;
+                break;
+            case Difficulty.Easy:
+                difficulty = playerScore >= normalScore ? Difficulty.Normal : difficulty;
+                break;
+            case Difficulty.Normal:
+                difficulty = playerScore >= hardScore ? Difficulty.Hard : difficulty;
+                break;
+            case Difficulty.Hard:
+                difficulty = playerScore >= veryHardScore ? Difficulty.VeryHard : difficulty;
+                break;
+            case Difficulty.VeryHard:
+                difficulty = playerScore >= impossibleScore ? Difficulty.Impossible : difficulty;
+                break;
+            default:
+                break;
+        }
     }
 
     public void ResetSettings(Difficulty toSet)
@@ -30,5 +70,7 @@ public class GameManager : MonoBehaviour
         difficulty = toSet;
     }
 
-    public void SetScoreText(TMP_Text toSet) { scoreText = toSet; }
+    public void SetScoreText(TMP_Text toSet) => scoreText = toSet;
+    public void SetRespawning(bool toSet) => respawning = toSet;
+    public bool GetRespawning() => respawning;
 }

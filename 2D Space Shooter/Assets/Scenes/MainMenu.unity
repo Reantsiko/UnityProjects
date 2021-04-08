@@ -975,6 +975,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
+        type: 3}
+      propertyPath: easyScore
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
+        type: 3}
+      propertyPath: hardScore
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
+        type: 3}
+      propertyPath: difficulty
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
+        type: 3}
+      propertyPath: normalScore
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
+        type: 3}
+      propertyPath: veryHardScore
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
+        type: 3}
+      propertyPath: impossibleScore
+      value: 5000
+      objectReference: {fileID: 0}
     - target: {fileID: 7921346169209017363, guid: 7817952f72a784943bcedd0b47f17769,
         type: 3}
       propertyPath: m_RootOrder
