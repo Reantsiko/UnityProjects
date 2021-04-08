@@ -29,4 +29,6 @@ public class GameManager : MonoBehaviour
         playerScore = 0;
         difficulty = toSet;
     }
+
+    public void SetScoreText(TMP_Text toSet) { scoreText = toSet; }
 }

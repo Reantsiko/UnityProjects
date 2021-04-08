@@ -29,11 +29,12 @@ public class MoveField : MonoBehaviour
         instance = this;
         wordManager = FindObjectOfType<WordManager>();
         moveableField = new Grid<Vector3>(width, height, cellSize, transform.position, is2D, debug, default);
+        Debug.LogWarning($"Movementgrid is disabled at the moment!");
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
             {
                 moveableField.SetGridObject(x, y, moveableField.GetCenterOfCell2D(x, y));
-                wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));
+                //wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));
                 //var obj = new GridObject(CreateTextField(textSize), moveableField.GetCenterOfCell2D(x, y), string.Empty);
                 //moveableField.SetGridObject(x, y, obj);
             }

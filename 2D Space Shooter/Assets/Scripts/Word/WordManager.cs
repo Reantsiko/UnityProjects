@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+using System.Linq;
 public class WordManager : MonoBehaviour
 {
     [Tooltip("The maximum of enemy units that can attack in case of multiple targets having the same word")]
     public int maxAttacks = 3;
     public int scorePerLetter = 10;
+    [SerializeField] private TMP_Text comboText = null;
     private bool hasActiveWord = false;
-    private Word activeWord = null;
-    private List<Word> words = new List<Word>();
-    private List<Word> possibleWords = new List<Word>();
+    [SerializeField] private Word activeWord = null;
+    [SerializeField] private List<Word> words = new List<Word>();
+    [SerializeField] private List<Word> possibleWords = new List<Word>();
     private WordSpawner wordSpawner = null;
+    private int combo = 0;
 
     private void Awake() => wordSpawner = GetComponent<WordSpawner>();
 
@@ -51,66 +54,60 @@ public class WordManager : MonoBehaviour
     private void HasActiveWord(char letter)
     {
         if (activeWord.GetNextLetter() == letter)
+        {
+            Combo();
             activeWord.TypeLetter();
+        }
         else
         {
+            activeWord.AttackPlayer();
             activeWord.ResetWord();
             activeWord = null;
             hasActiveWord = false;
+            UpdateComboText(true);
         }
     }
 
     private void CreatePossibleWords(char letter)
     {
-        foreach (var word in words)
-        {
-            if (word.GetNextLetter() == letter)
-            {
-                possibleWords.Add(word);
-                word.TypeLetter();
-                continue;
-            }
-        }
+        possibleWords = words.Where(w => w?.GetNextLetter() == letter).ToList();
+        possibleWords.ForEach(w => w?.TypeLetter());
+        if (possibleWords.Count() > 0)
+            Combo();
     }
 
     private void IterateOverPossibleWords(char letter)
     {
-        var wordsToRemove = new List<Word>();
-        foreach (var word in possibleWords)
-        {
-            if (word == null)
-                continue;
-            if (word.GetNextLetter() == letter)
-            {
-                word.TypeLetter();
-                if (word.WordTyped())
-                {
-                    wordsToRemove.Add(word);
-                    words.Remove(word);
-                }
-            }
-            else
-            {
-                word.ResetWord();
-                wordsToRemove.Add(word);
-            }
-        }
+        var wordsToRemove = possibleWords.Where(w => w.GetNextLetter() != letter).ToList();
+        var wordsToType = possibleWords.Where(w => w.GetNextLetter() == letter).ToList();
+
+        if (wordsToType.Count() > 0)
+            Combo();
+
+        wordsToType.ForEach(w => w?.TypeLetter());
+        var typedWords = wordsToType.Where(w => w != null ? w.WordTyped() : true).ToList();
+        typedWords.ForEach(w => wordsToRemove.Add(w));
+        wordsToRemove.ForEach(w => w?.ResetWord());
         AttackPlayerOnError(wordsToRemove);
     }
 
     private void AttackPlayerOnError(List<Word> wordsToRemove)
     {
         bool fireAtPlayer = wordsToRemove.Count == possibleWords.Count;
+        if (fireAtPlayer && wordsToRemove.All(w => !w.wordTyped))
+            UpdateComboText(true);
         int attacks = 0;
-        foreach (var word in wordsToRemove)
+        wordsToRemove.ForEach(w => AttackPlayer(fireAtPlayer, w, ref attacks));
+    }
+
+    private void AttackPlayer(bool fireAtPlayer, Word word, ref int attacks)
+    {
+        if (fireAtPlayer && !word.isMovement && !word.wordTyped && attacks < maxAttacks)
         {
-            if (fireAtPlayer && !word.isMovement && !word.wordTyped && attacks < maxAttacks)
-            {
-                attacks++;
-                word.AttackPlayer();
-            }
-            possibleWords.Remove(word);
+            attacks++;
+            word.AttackPlayer();
         }
+        possibleWords.Remove(word);
     }
 
     private void CheckForRemovalWord()
@@ -125,5 +122,18 @@ public class WordManager : MonoBehaviour
         hasActiveWord = true;
         activeWord = possibleWords[0];
         possibleWords.Clear();
+    }
+
+    private void Combo()
+    {
+        combo++;
+        UpdateComboText();
+    }
+
+    private void UpdateComboText(bool reset = false)
+    {
+        if (reset)
+            combo = 0;
+        comboText.text = $"Combo\nx{combo}";
     }
 }
