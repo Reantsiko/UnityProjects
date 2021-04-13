@@ -2,27 +2,24 @@
 <difficulties>
 	<VeryEasy ID="easy">
 		<wordlist ID="1">
-			<word>a</word>
-			<word>aa</word>
-			<word>aaa</word>
-			<word>aaaa</word>
-			<word>aaaaa</word>
-			<word>aaaaaa</word>
-			<word>aaaaaaa</word>
+			<word>fruit</word>
+			<word>apple</word>
+			<word>banana</word>
+			<word>orange</word>
+			<word>pear</word>
+			<word>strawberry</word>
+			<word>peach</word>
 		</wordlist>
 		<wordlist ID="2">
-			<word>b</word>
-			<word>bb</word>
-			<word>bbb</word>
-			<word>bbbb</word>
-			<word>bbbbb</word>
-			<word>bbbbbb</word>
-			<word>bbbbbbb</word>
-			<word>bbbbbbbb</word>
-			<word>bbbbbbbbb</word>
-			<word>bbbbbbbbbb</word>
-			<word>bbbbbbbbbbb</word>
-			<word>bbbbbbbbbbbb</word>
+			<word>computer</word>
+			<word>keyboard</word>
+			<word>mouse</word>
+			<word>screen</word>
+			<word>headset</word>
+			<word>game</word>
+			<word>printer</word>
+			<word>scanner</word>
+			<word>usb</word>
 		</wordlist>
 	</VeryEasy>
 	<Easy>

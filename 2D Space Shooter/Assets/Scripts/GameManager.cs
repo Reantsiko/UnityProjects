@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     public Transform playerTransform = null;
+    public int playerLives = 3;
     [SerializeField] public Difficulty difficulty = Difficulty.Easy;
     [SerializeField] private TMP_Text scoreText = null;
     
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour
     {
         playerScore = 0;
         difficulty = toSet;
+        playerLives = 3;
     }
 
     public void SetScoreText(TMP_Text toSet) => scoreText = toSet;

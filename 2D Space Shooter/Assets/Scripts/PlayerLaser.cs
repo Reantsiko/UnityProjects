@@ -21,9 +21,7 @@ public class PlayerLaser : MonoBehaviour
     {
         if (collision.transform == target)
         {
-            Debug.Log("Hit correct target");
             collision.GetComponent<WordDisplay>().RemoveWord();
-            //add points to score
             Destroy(gameObject);
         }
     }

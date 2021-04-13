@@ -30,7 +30,10 @@ public class Word
         typeIndex = 0;
     }
 
-    public char GetNextLetter() => word[typeIndex];
+    public char GetNextLetter()
+    {
+        return typeIndex < word.Length ? word[typeIndex] : ' ';
+    }
 
     public void TypeLetter()
     {

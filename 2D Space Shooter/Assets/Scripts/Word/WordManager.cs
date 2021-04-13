@@ -10,9 +10,9 @@ public class WordManager : MonoBehaviour
     public int scorePerLetter = 10;
     [SerializeField] private TMP_Text comboText = null;
     private bool hasActiveWord = false;
-    private Word activeWord = null;
-    private List<Word> words = new List<Word>();
-    private List<Word> possibleWords = new List<Word>();
+    [SerializeField]private Word activeWord = null;
+    [SerializeField] private List<Word> words = new List<Word>();
+    [SerializeField] private List<Word> possibleWords = new List<Word>();
     private WordSpawner wordSpawner = null;
     private int combo = 0;
 
@@ -31,6 +31,8 @@ public class WordManager : MonoBehaviour
     public void AddEnemyWord(WordDisplay display)
     {
         Word word = new Word(WordLists.instance.GetRandomWord(), scorePerLetter, display);
+        if (string.IsNullOrEmpty(word.word))
+            word.word = "error";
         words.Add(word);
         display.SetWord(word.word, word);
     }

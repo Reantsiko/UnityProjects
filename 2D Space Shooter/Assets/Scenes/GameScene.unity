@@ -308,6 +308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124c38f7814279b4399d5c7aabef14c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wordlistTag: wordlist
+  wordTag: word
 --- !u!4 &83755743
 Transform:
   m_ObjectHideFlags: 0
@@ -720,6 +722,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  spriteRenderer: {fileID: 366926666}
+  collider: {fileID: 366926670}
 --- !u!114 &366926669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1071,7 +1075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &732546658
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1630,7 +1634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1387138548
 Transform:
   m_ObjectHideFlags: 0
@@ -2136,6 +2140,16 @@ MonoBehaviour:
   maxAttacks: 3
   scorePerLetter: 10
   comboText: {fileID: 1735918167}
+  activeWord:
+    word: 
+    isMovement: 0
+    moveTarget: {x: 0, y: 0, z: 0}
+    wordTyped: 0
+    scorePerLetter: 0
+    typeIndex: 0
+    display: {fileID: 0}
+  words: []
+  possibleWords: []
 --- !u!1 &1735918166
 GameObject:
   m_ObjectHideFlags: 0
