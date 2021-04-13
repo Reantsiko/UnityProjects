@@ -1,37 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System;
 using UnityEngine;
-
+using System.Xml;
 public class WordLists : MonoBehaviour
 {
     public static WordLists instance = null;
-    public Dictionary<Difficulty, List<string>> wordLists;
-    
+    public Dictionary<Difficulty, List<string>> wordLists = new Dictionary<Difficulty, List<string>>();
+
     private void InitializeLists()
     {
-        wordLists = new Dictionary<Difficulty, List<string>>();
+        XmlDocument file;
+        TextAsset xmlTextAsset = Resources.Load<TextAsset>("text");
+        file = new XmlDocument();
+        file.LoadXml(xmlTextAsset.text);
         foreach (var diff in Enum.GetValues(typeof(Difficulty)))
         {
             wordLists.Add((Difficulty)diff.GetHashCode(), new List<string>());
-
-            var path = Path.Combine(Application.streamingAssetsPath, diff.ToString());
-            if (File.Exists(path))
-            {
-                using (StreamReader sr = File.OpenText(path))
-                {
-                    string s = string.Empty;
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        wordLists[(Difficulty)diff.GetHashCode()].Add(s);
-                    }
-                }
-            }
-            else
-                Debug.LogError($"File not found with path: {path}");
+            var lists = file.SelectNodes($"difficulties/{diff}/wordlist");
+            var selectedList = lists[UnityEngine.Random.Range(0, lists.Count)]?.SelectNodes("word");
+            for (int j = 0; j < selectedList?.Count; j++)
+                wordLists[(Difficulty)diff.GetHashCode()].Add(selectedList[j].InnerText);
         }
-        
     }
 
     public string GetRandomWord()
@@ -45,7 +34,6 @@ public class WordLists : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
         instance = this;
         InitializeLists();
     }

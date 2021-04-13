@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<difficulties>
+	<VeryEasy ID="easy">
+		<wordlist ID="1">
+			<word>a</word>
+			<word>aa</word>
+			<word>aaa</word>
+			<word>aaaa</word>
+			<word>aaaaa</word>
+			<word>aaaaaa</word>
+			<word>aaaaaaa</word>
+		</wordlist>
+		<wordlist ID="2">
+			<word>b</word>
+			<word>bb</word>
+			<word>bbb</word>
+			<word>bbbb</word>
+			<word>bbbbb</word>
+			<word>bbbbbb</word>
+			<word>bbbbbbb</word>
+			<word>bbbbbbbb</word>
+			<word>bbbbbbbbb</word>
+			<word>bbbbbbbbbb</word>
+			<word>bbbbbbbbbbb</word>
+			<word>bbbbbbbbbbbb</word>
+		</wordlist>
+	</VeryEasy>
+	<Easy>
+		<wordlist>
+			<word>c</word>
+			<word>cc</word>
+			<word>ccc</word>
+			<word>cccc</word>
+			<word>ccccc</word>
+			<word>cccccc</word>
+			<word>ccccccc</word>
+			<word>cccccccc</word>
+		</wordlist>
+	</Easy>
+	<Normal>
+		<wordlist>
+			<word>d</word>
+			<word>dd</word>
+			<word>ddd</word>
+			<word>dddd</word>
+		</wordlist>
+	</Normal>
+</difficulties>
