@@ -13,4 +13,12 @@ public class SoundHandler : MonoBehaviour
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
     }
+
+    private void Update()
+    {
+        if (Time.timeScale == 0 && audioSource.isPlaying)
+            audioSource.Pause();
+        else if (Time.timeScale == 1 && !audioSource.isPlaying)
+            audioSource.UnPause();
+    }
 }

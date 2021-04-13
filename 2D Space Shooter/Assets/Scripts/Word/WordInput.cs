@@ -8,7 +8,7 @@ public class WordInput : MonoBehaviour
 
     void Update()
     {
-        if (!GameManager.instance.GetRespawning())
+        if (!GameManager.instance.GetRespawning() && Time.timeScale != 0)
             Input.inputString.ToList().ForEach(l => wordManager.TypeLetter(l));
     }
 }

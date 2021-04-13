@@ -14,7 +14,7 @@ public class Menu : MonoBehaviour
     public void StartGame(int toSet)
     {
         GameManager.instance.ResetSettings((Difficulty)toSet);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadSceneAsync(1);
     }
     
     public void OpenMenu(GameObject toOpen)
