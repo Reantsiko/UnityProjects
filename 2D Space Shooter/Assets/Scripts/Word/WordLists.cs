@@ -7,6 +7,7 @@ public class WordLists : MonoBehaviour
     public static WordLists instance = null;
     public Dictionary<Difficulty, List<string>> wordLists = new Dictionary<Difficulty, List<string>>();
     [Header("XML dependencies")]
+    [SerializeField] private string wordlistName = null;
     [Tooltip("Tag for the wordlists in the XML file.")]
     [SerializeField] private string wordlistTag = "wordlist";
     [Tooltip("Tag for the words within the lists of the XML file.")]
@@ -14,8 +15,13 @@ public class WordLists : MonoBehaviour
 
     private void InitializeLists()
     {
+        if (string.IsNullOrEmpty(wordlistName))
+        {
+            Debug.LogError($"No filename for the wordlist!");
+            return;
+        }
         XmlDocument file = new XmlDocument(); ;
-        TextAsset xmlTextAsset = Resources.Load<TextAsset>("text");
+        TextAsset xmlTextAsset = Resources.Load<TextAsset>(wordlistName);
         file.LoadXml(xmlTextAsset.text);
         foreach (var diff in Enum.GetValues(typeof(Difficulty)))
         {

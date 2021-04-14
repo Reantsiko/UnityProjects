@@ -308,6 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124c38f7814279b4399d5c7aabef14c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wordlistName: WordList
   wordlistTag: wordlist
   wordTag: word
 --- !u!4 &83755743
@@ -691,6 +692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealthPoints: 1
+  respawnTime: 3
   healthSlider: {fileID: 726034877}
   healthImage: {fileID: 469387913}
   healthGradient:
@@ -723,7 +725,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   spriteRenderer: {fileID: 366926666}
-  collider: {fileID: 366926670}
+  boxCollider: {fileID: 0}
 --- !u!114 &366926669
 MonoBehaviour:
   m_ObjectHideFlags: 0
