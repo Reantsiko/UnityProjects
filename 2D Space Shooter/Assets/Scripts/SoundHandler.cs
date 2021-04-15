@@ -6,6 +6,7 @@ public class SoundHandler : MonoBehaviour
 {
     [SerializeField] private AudioClip[] music = null;
     [SerializeField] private AudioSource audioSource = null;
+    private int currentTrack = 0;
     private void Awake()
     {
         if (FindObjectsOfType<SoundHandler>().Length == 1)
@@ -28,11 +29,15 @@ public class SoundHandler : MonoBehaviour
             audioSource = GetComponent<AudioSource>();
     }
 
-    /*private void Update()
+    private void Update()
     {
-        if (Time.timeScale == 0 && audioSource.isPlaying)
-            audioSource.Pause();
-        else if (Time.timeScale == 1 && !audioSource.isPlaying)
-            audioSource.UnPause();
-    }*/
+        if (/*!audioSource.isPlaying && */audioSource.time == audioSource.clip.length)
+        {
+            currentTrack++;
+            if (currentTrack >= music.Length)
+                    currentTrack = 0;
+            audioSource.clip = music[currentTrack];
+            audioSource.Play();
+        }
+    }
 }
