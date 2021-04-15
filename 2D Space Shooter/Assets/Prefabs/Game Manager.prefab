@@ -44,6 +44,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
+  playerLives: 1
+  menu: {fileID: 0}
   difficulty: 1
   scoreText: {fileID: 0}
-  playerScore: 0
+  easyScore: 10000
+  normalScore: 20000
+  hardScore: 30000
+  veryHardScore: 40000
+  impossibleScore: 50000
+  highestDifficultyReachedKey: highest

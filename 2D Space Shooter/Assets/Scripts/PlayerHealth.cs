@@ -46,7 +46,7 @@ public class PlayerHealth : MonoBehaviour
         if (GameManager.instance.playerLives < 0)
         {
             yield return new WaitForEndOfFrame();
-            Debug.Log("Game Over!");
+            GameManager.instance.GameOver();
         }
         else
         {
@@ -59,6 +59,7 @@ public class PlayerHealth : MonoBehaviour
     {
         GameManager.instance.SetRespawning(false);
         currentHealthPoints = 1f;
+        UpdateHealthBar();
         StartCoroutine(PlayerBlink());
     }
 

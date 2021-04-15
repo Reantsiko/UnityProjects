@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 24215135}
   - component: {fileID: 24215134}
   - component: {fileID: 24215133}
+  - component: {fileID: 24215136}
   m_Layer: 5
   m_Name: Normal Button
   m_TagString: Untagged
@@ -203,12 +204,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1075712586}
-        m_MethodName: OpenMenu
-        m_Mode: 2
+        m_MethodName: StartGame
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1452579844}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -310,6 +311,165 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 24215131}
   m_CullTransparentMesh: 0
+--- !u!114 &24215136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24215131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba05420177d1a04fb5bbf6bcf38c959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 3
+  playerPrefKey: highest
+--- !u!1 &95131067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 95131070}
+  - component: {fileID: 95131069}
+  - component: {fileID: 95131068}
+  m_Layer: 0
+  m_Name: Music Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &95131068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95131067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771ac1ec2706bc34fb78b5b9e87e67e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  music:
+  - {fileID: 8300000, guid: 119b8a5493950f64392f1565cf10b704, type: 3}
+  - {fileID: 8300000, guid: 2d080cb6c5b762f4e8367580241f5acf, type: 3}
+  - {fileID: 8300000, guid: d2617abaacd51a74faf4a968e5ab0b9d, type: 3}
+  audioSource: {fileID: 95131069}
+--- !u!82 &95131069
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95131067}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 119b8a5493950f64392f1565cf10b704, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &95131070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95131067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &123677473
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +683,7 @@ GameObject:
   - component: {fileID: 292583572}
   - component: {fileID: 292583571}
   m_Layer: 5
-  m_Name: Score Text
+  m_Name: Score Text 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -645,6 +805,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292583569}
   m_CullTransparentMesh: 0
+--- !u!1 &320991411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 320991413}
+  - component: {fileID: 320991412}
+  m_Layer: 0
+  m_Name: High Score Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &320991412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320991411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4999740ab2b77245a8a4732d6d71761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highScores: 
+  scoreAmounts: 5
+  defaultScore: 10000
+  playerPrefKeys:
+  - first
+  - second
+  - third
+  - fourth
+  - fifth
+--- !u!4 &320991413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320991411}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 391.2728, y: 650.3869, z: -201.19402}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &375551859
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +869,7 @@ GameObject:
   - component: {fileID: 375551862}
   - component: {fileID: 375551861}
   m_Layer: 5
-  m_Name: Score Text
+  m_Name: Score Text 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -791,6 +1003,7 @@ GameObject:
   - component: {fileID: 377041883}
   - component: {fileID: 377041882}
   - component: {fileID: 377041881}
+  - component: {fileID: 377041884}
   m_Layer: 5
   m_Name: Impossible Button
   m_TagString: Untagged
@@ -861,12 +1074,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1075712586}
-        m_MethodName: OpenMenu
-        m_Mode: 2
+        m_MethodName: StartGame
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1452579844}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -968,6 +1181,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377041879}
   m_CullTransparentMesh: 0
+--- !u!114 &377041884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377041879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba05420177d1a04fb5bbf6bcf38c959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 6
+  playerPrefKey: highest
 --- !u!1001 &432351180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -975,36 +1202,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
-        type: 3}
-      propertyPath: easyScore
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
-        type: 3}
-      propertyPath: hardScore
-      value: 3000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
-        type: 3}
-      propertyPath: difficulty
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
-        type: 3}
-      propertyPath: normalScore
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
-        type: 3}
-      propertyPath: veryHardScore
-      value: 4000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
-        type: 3}
-      propertyPath: impossibleScore
-      value: 5000
-      objectReference: {fileID: 0}
     - target: {fileID: 7921346169209017363, guid: 7817952f72a784943bcedd0b47f17769,
         type: 3}
       propertyPath: m_RootOrder
@@ -1234,6 +1431,7 @@ GameObject:
   - component: {fileID: 491890781}
   - component: {fileID: 491890780}
   - component: {fileID: 491890779}
+  - component: {fileID: 491890782}
   m_Layer: 5
   m_Name: Easy Button
   m_TagString: Untagged
@@ -1304,12 +1502,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1075712586}
-        m_MethodName: OpenMenu
-        m_Mode: 2
+        m_MethodName: StartGame
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1452579844}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1413,6 +1611,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 491890777}
   m_CullTransparentMesh: 0
+--- !u!114 &491890782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491890777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba05420177d1a04fb5bbf6bcf38c959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 2
+  playerPrefKey: highest
 --- !u!1 &497886791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,8 +1901,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1804,8 +2016,6 @@ GameObject:
   - component: {fileID: 537397562}
   - component: {fileID: 537397561}
   - component: {fileID: 537397560}
-  - component: {fileID: 537397563}
-  - component: {fileID: 537397564}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1878,119 +2088,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &537397563
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537397559}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 119b8a5493950f64392f1565cf10b704, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &537397564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537397559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 771ac1ec2706bc34fb78b5b9e87e67e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  music:
-  - {fileID: 8300000, guid: 119b8a5493950f64392f1565cf10b704, type: 3}
-  - {fileID: 8300000, guid: 2d080cb6c5b762f4e8367580241f5acf, type: 3}
-  - {fileID: 8300000, guid: d2617abaacd51a74faf4a968e5ab0b9d, type: 3}
-  audioSource: {fileID: 0}
 --- !u!1 &556980907
 GameObject:
   m_ObjectHideFlags: 0
@@ -2003,7 +2100,7 @@ GameObject:
   - component: {fileID: 556980910}
   - component: {fileID: 556980909}
   m_Layer: 5
-  m_Name: Score Text
+  m_Name: Score Text 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2264,8 +2361,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2730,6 +2827,7 @@ GameObject:
   - component: {fileID: 960910365}
   - component: {fileID: 960910364}
   - component: {fileID: 960910363}
+  - component: {fileID: 960910366}
   m_Layer: 5
   m_Name: Hard Button
   m_TagString: Untagged
@@ -2800,12 +2898,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1075712586}
-        m_MethodName: OpenMenu
-        m_Mode: 2
+        m_MethodName: StartGame
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1452579844}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2907,6 +3005,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 960910361}
   m_CullTransparentMesh: 0
+--- !u!114 &960910366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960910361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba05420177d1a04fb5bbf6bcf38c959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 4
+  playerPrefKey: highest
 --- !u!1 &1049634785
 GameObject:
   m_ObjectHideFlags: 0
@@ -2957,7 +3069,7 @@ GameObject:
   - component: {fileID: 1053364006}
   - component: {fileID: 1053364005}
   m_Layer: 5
-  m_Name: Score Text
+  m_Name: Score Text 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3194,18 +3306,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858c14897e5e8424a9a57875e3fdc50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneBuildIndex: 0
+  soundImage: {fileID: 1349410609}
+  soundSprites:
+  - {fileID: 21300000, guid: 29a0c3f6530c748f0b85255e7f005e8c, type: 3}
+  - {fileID: 21300000, guid: 454a44711857a4fba85b5ef63a492276, type: 3}
+  audioSource: {fileID: 0}
   menus:
   - {fileID: 1391363208}
   - {fileID: 1452579844}
   - {fileID: 1049634785}
   quitButton: {fileID: 511394494}
-  sceneBuildIndex: 0
+  scoreTexts:
+  - {fileID: 292583571}
+  - {fileID: 556980909}
+  - {fileID: 1053364005}
+  - {fileID: 2131098494}
+  - {fileID: 375551861}
+  gameOverlay: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  gameOverMenu: {fileID: 0}
+  recordText: {fileID: 0}
+  finalScoreText: {fileID: 0}
   isPaused: 0
-  soundImage: {fileID: 1349410609}
-  soundSprites:
-  - {fileID: 21300000, guid: 29a0c3f6530c748f0b85255e7f005e8c, type: 3}
-  - {fileID: 21300000, guid: 454a44711857a4fba85b5ef63a492276, type: 3}
-  audioSource: {fileID: 537397563}
 --- !u!1 &1270980904
 GameObject:
   m_ObjectHideFlags: 0
@@ -4337,8 +4460,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4399,6 +4522,7 @@ GameObject:
   - component: {fileID: 2012190909}
   - component: {fileID: 2012190908}
   - component: {fileID: 2012190907}
+  - component: {fileID: 2012190910}
   m_Layer: 5
   m_Name: Very Hard Button
   m_TagString: Untagged
@@ -4469,12 +4593,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1075712586}
-        m_MethodName: OpenMenu
-        m_Mode: 2
+        m_MethodName: StartGame
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1452579844}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4576,6 +4700,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012190905}
   m_CullTransparentMesh: 0
+--- !u!114 &2012190910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012190905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba05420177d1a04fb5bbf6bcf38c959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 5
+  playerPrefKey: highest
 --- !u!1 &2112028644
 GameObject:
   m_ObjectHideFlags: 0
@@ -4722,7 +4860,7 @@ GameObject:
   - component: {fileID: 2131098495}
   - component: {fileID: 2131098494}
   m_Layer: 5
-  m_Name: Score Text
+  m_Name: Score Text 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

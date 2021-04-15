@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     public Transform playerTransform = null;
     public int playerLives = 3;
+    public Menu menu;
     [SerializeField] public Difficulty difficulty = Difficulty.Easy;
     [SerializeField] private TMP_Text scoreText = null;
     
@@ -16,15 +17,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int hardScore = 3000;
     [SerializeField] private int veryHardScore = 4000;
     [SerializeField] private int impossibleScore = 5000;
-
+    [SerializeField] private string highestDifficultyReachedKey = "highest";
     private int playerScore;
     private bool respawning = false;
 
     private void Awake()
     {
-        instance = this;
-        DontDestroyOnLoad(this.gameObject);
-        playerScore = 0;
+        if (FindObjectsOfType<GameManager>().Length == 1)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+            Destroy(gameObject);
     }
 
     public void UpdateScore(int scoreChange)
@@ -67,9 +72,26 @@ public class GameManager : MonoBehaviour
 
     public void ResetSettings(Difficulty toSet)
     {
+        respawning = false;
+        playerTransform = null;
+        menu = null;
         playerScore = 0;
         difficulty = toSet;
         playerLives = 3;
+    }
+
+    public void GameOver()
+    {
+        if (PlayerPrefs.HasKey(highestDifficultyReachedKey))
+        {
+            var highest = PlayerPrefs.GetInt(highestDifficultyReachedKey);
+            if (difficulty.GetHashCode() >= highest)
+                PlayerPrefs.SetInt(highestDifficultyReachedKey, difficulty.GetHashCode());
+        }
+        else
+            PlayerPrefs.SetInt(highestDifficultyReachedKey, difficulty.GetHashCode());
+        StopAllCoroutines();
+        menu.GameOver(playerScore);
     }
 
     public void SetScoreText(TMP_Text toSet) => scoreText = toSet;
