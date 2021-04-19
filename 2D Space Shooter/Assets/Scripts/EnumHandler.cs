@@ -7,3 +7,16 @@
     VeryHard = 5,
     Impossible = 6
 }
+
+public enum WordType
+{
+    Enemy,
+    Movement,
+    PowerUp
+}
+
+public enum PowerUpType
+{
+    Bomb,
+    Shield
+}

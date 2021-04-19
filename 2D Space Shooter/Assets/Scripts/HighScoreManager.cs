@@ -33,7 +33,6 @@ public class HighScoreManager : MonoBehaviour
             else
             {
                 var score = defaultScore * (i + 1);
-                //SaveScore(playerPrefKeys[i], score);
                 highScores.Add(score);
             }
         }
@@ -58,9 +57,7 @@ public class HighScoreManager : MonoBehaviour
                     var temp = highScores[i];
                     highScores[i] = score;
                     score = temp;
-                    //ReplaceScore(i, temp);
                     SaveScore(playerPrefKeys[i], highScores[i]);
-                    //break;
                 }
             }
             return true;
@@ -68,24 +65,6 @@ public class HighScoreManager : MonoBehaviour
         return false;
     }
 
-    private void ReplaceScore(int pos, int scoreToMove)
-    {
-        for (int i = pos + 1; i < scoreAmounts; i++)
-        {
-            var temp = highScores[i];
-            highScores[i] = scoreToMove;
-            SaveScore(playerPrefKeys[i], highScores[i]);
-            scoreToMove = temp;
-        }
-        PlayerPrefs.Save();
-    }
-
-
-    private void SaveScore(string key, int score)
-    {
-        Debug.Log($"Saving {score} on key {key}"); 
-        PlayerPrefs.SetInt(key, score);
-    }
-
+    private void SaveScore(string key, int score) => PlayerPrefs.SetInt(key, score);
     public int GetScoreAmounts() => scoreAmounts;
 }

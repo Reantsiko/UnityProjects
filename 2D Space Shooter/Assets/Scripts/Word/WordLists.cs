@@ -5,7 +5,7 @@ using System.Xml;
 public class WordLists : MonoBehaviour
 {
     public static WordLists instance = null;
-    public Dictionary<Difficulty, List<string>> wordLists = new Dictionary<Difficulty, List<string>>();
+    public Dictionary<string, List<string>> wordLists = new Dictionary<string, List<string>>();
     [Header("XML dependencies")]
     [SerializeField] private string wordlistName = null;
     [Tooltip("Tag for the wordlists in the XML file.")]
@@ -25,11 +25,11 @@ public class WordLists : MonoBehaviour
         file.LoadXml(xmlTextAsset.text);
         foreach (var diff in Enum.GetValues(typeof(Difficulty)))
         {
-            wordLists.Add((Difficulty)diff.GetHashCode(), new List<string>());
-            var lists = file.SelectNodes($"difficulties/{diff}/{wordlistTag}");
+            wordLists.Add(diff.ToString(), new List<string>());
+            var lists = file.SelectNodes($"difficulties/{diff.ToString()}/{wordlistTag}");
             var selectedList = lists[UnityEngine.Random.Range(0, lists.Count)]?.SelectNodes($"{wordTag}");
             for (int i = 0; i < selectedList?.Count; i++)
-                wordLists[(Difficulty)diff.GetHashCode()].Add(selectedList[i].InnerText);
+                wordLists[diff.ToString()].Add(selectedList[i].InnerText);
         }
     }
 
@@ -38,7 +38,8 @@ public class WordLists : MonoBehaviour
         int modifier = GameManager.instance.difficulty.GetHashCode() > 4 ? 2 : 0;
         var diff = UnityEngine.Random.Range(1, GameManager.instance.difficulty.GetHashCode() + 1);
         diff = (diff + modifier) <= GameManager.instance.difficulty.GetHashCode() ? (diff + modifier) : diff;
-        var list = wordLists[(Difficulty)diff];
+        var selecteDiff = (Difficulty)diff;
+        var list = wordLists[selecteDiff.ToString()];
         return list.Count != 0 ? list[UnityEngine.Random.Range(0, list.Count)] : string.Empty;
     }
 

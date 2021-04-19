@@ -8,11 +8,11 @@ public class WordSpawner : MonoBehaviour
     public GameObject moveWordPrefab;
     public Transform canvas;
     public Transform worldCanvas;
-    public WordDisplay SpawnWord(bool isMovement, Vector3 spawnPos)
+    public WordDisplay SpawnWord(WordType wordType, Vector3 spawnPos)
     {
         Vector3 randomPos = new Vector3(Random.Range(-8f, 8f), 7f, 0f);
         GameObject wordObj;
-        if (!isMovement)
+        if (wordType == WordType.Enemy)
             wordObj = Instantiate(wordPrefab, randomPos, Quaternion.identity, canvas);
         else
             wordObj = Instantiate(moveWordPrefab, spawnPos, Quaternion.identity, worldCanvas);

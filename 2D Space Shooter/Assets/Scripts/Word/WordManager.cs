@@ -13,24 +13,26 @@ public class WordManager : MonoBehaviour
     [SerializeField]private Word activeWord = null;
     [SerializeField] private List<Word> words = new List<Word>();
     [SerializeField] private List<Word> possibleWords = new List<Word>();
+    private PowerUpUI powerUpUI = null;
     private WordSpawner wordSpawner = null;
     private int combo = 0;
 
     private void Awake() => wordSpawner = GetComponent<WordSpawner>();
+    private void Start() => powerUpUI = FindObjectOfType<PowerUpUI>();
 
     public void RemoveWord(Word toRemove) => words.Remove(toRemove);
 
     public void AddMovementWord(Vector3 moveTarget)
     {
-        var wordDisplay = wordSpawner.SpawnWord(true, moveTarget);
-        Word word = new Word(WordGenerator.GetRandomMovementWord(), wordDisplay, moveTarget, true);
+        var wordDisplay = wordSpawner.SpawnWord(WordType.Movement, moveTarget);
+        Word word = new Word("test", wordDisplay, WordType.Movement, moveTarget);
         words.Add(word);
         wordDisplay.SetWord(word.word, word);
     }
 
     public void AddEnemyWord(WordDisplay display)
     {
-        Word word = new Word(WordLists.instance.GetRandomWord(), scorePerLetter, display);
+        Word word = new Word(WordLists.instance.GetRandomWord(), display, WordType.Enemy, Vector3.zero, scorePerLetter);
         if (string.IsNullOrEmpty(word.word))
             word.word = "error";
         words.Add(word);
@@ -57,16 +59,16 @@ public class WordManager : MonoBehaviour
     {
         if (activeWord.GetNextLetter() == letter)
         {
-            Combo();
+            Combo(activeWord.wordType);
             activeWord.TypeLetter();
         }
         else
         {
             activeWord.AttackPlayer();
+            UpdateComboText(activeWord.wordType, true);
             activeWord.ResetWord();
             activeWord = null;
             hasActiveWord = false;
-            UpdateComboText(true);
             TypeLetter(letter);
         }
     }
@@ -74,9 +76,13 @@ public class WordManager : MonoBehaviour
     private void CreatePossibleWords(char letter)
     {
         possibleWords = words.Where(w => w?.GetNextLetter() == letter).ToList();
+        if (powerUpUI.GetBombAmount() >= 0 && powerUpUI.bombWordDisplay.word.GetNextLetter() == letter)
+            possibleWords.Add(powerUpUI.bombWordDisplay.word);
+        if (powerUpUI.GetShieldAmount() >= 0 && powerUpUI.shieldWordDisplay.word.GetNextLetter() == letter)
+            possibleWords.Add(powerUpUI.shieldWordDisplay.word);
         possibleWords.ForEach(w => w?.TypeLetter());
         if (possibleWords.Count() > 0)
-            Combo();
+            Combo(WordType.Enemy);
     }
 
     private void IterateOverPossibleWords(char letter)
@@ -85,7 +91,7 @@ public class WordManager : MonoBehaviour
         var wordsToType = possibleWords.Where(w => w.GetNextLetter() == letter).ToList();
 
         if (wordsToType.Count() > 0)
-            Combo();
+            Combo(WordType.Enemy);
 
         wordsToType.ForEach(w => w?.TypeLetter());
         var typedWords = wordsToType.Where(w => w != null ? w.WordTyped(combo) : true).ToList();
@@ -100,15 +106,15 @@ public class WordManager : MonoBehaviour
     private void AttackPlayerOnError(List<Word> wordsToRemove)
     {
         bool fireAtPlayer = wordsToRemove.Count == possibleWords.Count;
-        if (fireAtPlayer && wordsToRemove.All(w => !w.wordTyped))
-            UpdateComboText(true);
+        if (fireAtPlayer && wordsToRemove.All(w => w.wordType == WordType.Enemy && !w.wordTyped))
+            UpdateComboText(WordType.Enemy, true);
         int attacks = 0;
         wordsToRemove.ForEach(w => AttackPlayer(fireAtPlayer, w, ref attacks));
     }
 
     private void AttackPlayer(bool fireAtPlayer, Word word, ref int attacks)
     {
-        if (fireAtPlayer && !word.isMovement && !word.wordTyped && attacks < maxAttacks)
+        if (word.wordType == WordType.Enemy && fireAtPlayer && !word.wordTyped && attacks < maxAttacks)
         {
             attacks++;
             word.AttackPlayer();
@@ -130,16 +136,23 @@ public class WordManager : MonoBehaviour
         possibleWords.Clear();
     }
 
-    private void Combo()
+    private void Combo(WordType wordType)
     {
         combo++;
-        UpdateComboText();
+        UpdateComboText(wordType);
     }
 
-    private void UpdateComboText(bool reset = false)
+    private void UpdateComboText(WordType wordType, bool reset = false)
     {
+        if (wordType == WordType.Movement || wordType == WordType.PowerUp) return;
+
         if (reset)
             combo = 0;
         comboText.text = $"Combo\nx{combo}";
+    }
+
+    public void Bomb()
+    {
+        words.ForEach(w => w.Bombed());
     }
 }

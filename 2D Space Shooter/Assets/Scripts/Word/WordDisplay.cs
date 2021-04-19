@@ -16,11 +16,16 @@ public class WordDisplay : MonoBehaviour
 
     public void SetWord(string toSet, Word _word)
     {
-        text.text = $"<color=red>{toSet}</color>";
+        if (text == null) return;
+        
+        if (_word.wordType == WordType.Enemy)
+           text.text = $"<color=red>{toSet}</color>";
+        else
+            text.text = $"<color=white>{toSet}</color>";
         word = _word;
     }
     public void TypeLetter(string word, int index) => text.text = $"<color=green>{word.Substring(0, index)}</color><color=red>{word.Substring(index)}</color>";
     public void RemoveWordFromList() => wordManager.RemoveWord(word);
-    public void AttackPlayer() => enemyAttack.FireAtPlayer();
+    public void AttackPlayer() => enemyAttack?.FireAtPlayer();
     public void RemoveWord() => Destroy(gameObject);
 }

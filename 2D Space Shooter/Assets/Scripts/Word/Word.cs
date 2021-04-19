@@ -3,29 +3,31 @@
 public class Word
 {
     public string word;
-    public bool isMovement;
+    public WordType wordType;
+    public PowerUpType powerUpType;
     public Vector3 moveTarget;
     public bool wordTyped;
     public int scorePerLetter;
     [SerializeField] private int typeIndex;
     [SerializeField] private WordDisplay display;
-    public Word(string _word, WordDisplay _wordDisplay, Vector3 _moveTarget, bool _isMovement = false)
+    /*public Word(string _word, WordDisplay _wordDisplay, Vector3 _moveTarget, WordType _wordType)
     {
         word = _word;
         display = _wordDisplay;
-        isMovement = _isMovement;
+        wordType = _wordType;
         moveTarget = _moveTarget;
         
         wordTyped = false;
         display.SetWord(word, this);
         typeIndex = 0;
-    }
-    public Word(string _word, int _scorePerLetter, WordDisplay _wordDisplay, bool _isMovement = false)
+    }*/
+    public Word(string _word, WordDisplay _wordDisplay, WordType _wordType, Vector3 _moveTarget, int _scorePerLetter = 0)
     {
         word = _word;
         display = _wordDisplay;
         scorePerLetter = _scorePerLetter;
-        isMovement = _isMovement;
+        wordType = _wordType;
+        moveTarget = _moveTarget;
         display.SetWord(word, this);
         typeIndex = 0;
     }
@@ -61,19 +63,35 @@ public class Word
 
         if (wordTyped)
         {
-            if (isMovement)
+            if (wordType == WordType.Movement)
             {
                 PlayerMovement.instance.SetMoveTarget(moveTarget);
                 display.RemoveWord();
             }
-            else
+            else if (wordType == WordType.Enemy)
             {
                 GameManager.instance.UpdateScore(scorePerLetter * typeIndex + currentCombo);
                 if (display)
                     PlayerAttack.instance.Fire(display.transform);
             }
+            else if (wordType == WordType.PowerUp)
+            {
+                if (powerUpType == PowerUpType.Bomb)
+                    PowerUpUI.instance.UseBomb();
+                else if (powerUpType == PowerUpType.Shield)
+                    PowerUpUI.instance.UseShield();
+            }
         }
         return wordTyped;
+    }
+
+    public void Bombed()
+    {
+        if (wordType != WordType.Enemy) return;
+
+        GameManager.instance.UpdateScore(scorePerLetter * word.Length);
+        if (display)
+            PlayerAttack.instance.Fire(display.transform);
     }
 
     public void AttackPlayer()

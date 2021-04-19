@@ -23,15 +23,11 @@ public class SoundHandler : MonoBehaviour
             audioSource.UnPause();
     }
 
-    private void Start()
-    {
-        if (audioSource == null)
-            audioSource = GetComponent<AudioSource>();
-    }
+    private void Start() => audioSource = GetComponent<AudioSource>();
 
     private void Update()
     {
-        if (/*!audioSource.isPlaying && */audioSource.time == audioSource.clip.length)
+        if (audioSource.time == audioSource.clip.length)
         {
             currentTrack++;
             if (currentTrack >= music.Length)

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public static PlayerHealth instance;
     [SerializeField] private float currentHealthPoints = 1f;
     [SerializeField] private float respawnTime = 3f;
     [SerializeField] private Slider healthSlider = null;
@@ -11,18 +12,28 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private Gradient healthGradient = null;
     [SerializeField] private SpriteRenderer spriteRenderer = null;
     [SerializeField] private BoxCollider2D boxCollider = null;
-
+    [SerializeField] private GameObject shield = null;
 
     private void Start()
     {
+        instance = this;
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
         if (boxCollider == null)
             boxCollider = GetComponent<BoxCollider2D>();
         UpdateHealthBar();
     }
+
+    public void ActivateShield() => shield?.SetActive(true);
+
     public void TakeOrHealDamage(float change)
     {
+        if (shield != null && shield.activeSelf)
+        {
+            shield.SetActive(false);
+            return;
+        }
+
         currentHealthPoints = Mathf.Clamp(currentHealthPoints + change, 0f, 1f);
         UpdateHealthBar();
         if (currentHealthPoints <= 0f)
