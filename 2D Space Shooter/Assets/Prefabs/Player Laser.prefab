@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   speed: 8
+  explosionRef: Explosion Sound Effect
 --- !u!61 &74742755558396121
 BoxCollider2D:
   m_ObjectHideFlags: 0

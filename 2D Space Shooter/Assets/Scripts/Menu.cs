@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 public class Menu : MonoBehaviour
 {
     [Header("General")]
@@ -46,12 +47,11 @@ public class Menu : MonoBehaviour
 
     public void SetSound()
     {
-        if (audioSource == null) return;
-        bool val = !audioSource.mute;
+        bool val = !SoundHandler.instance.GetIsMuted();
+        SoundHandler.instance.SetSound(val);
         int img = val ? 1 : 0;
         if (soundImage != null)
             soundImage.sprite = soundSprites[img];
-        audioSource.mute = val;
     }
 
     public void LoadMainMenu()

@@ -424,7 +424,8 @@ MonoBehaviour:
   wordManager: {fileID: 0}
   word:
     word: 
-    isMovement: 0
+    wordType: 0
+    powerUpType: 0
     moveTarget: {x: 0, y: 0, z: 0}
     wordTyped: 0
     scorePerLetter: 0
@@ -474,3 +475,4 @@ MonoBehaviour:
     type: 3}
   minAttackWaitTime: 1
   maxAttackWaitTime: 5
+  soundReference: Laser Sound Effect

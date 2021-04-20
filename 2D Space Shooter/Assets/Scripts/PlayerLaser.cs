@@ -6,7 +6,8 @@ public class PlayerLaser : MonoBehaviour
 {
     public Transform target = null;
     public float speed = 5f;
-    
+    [SerializeField] private string explosionRef = null;
+
     void Update()
     {
         if (target == null)
@@ -22,6 +23,8 @@ public class PlayerLaser : MonoBehaviour
         if (collision.transform == target)
         {
             collision.GetComponent<WordDisplay>().RemoveWord();
+            VFXPool.instance.Spawn(collision.transform.position);
+            SoundPool.instance.Spawn(collision.transform.position, explosionRef);
             Destroy(gameObject);
         }
     }

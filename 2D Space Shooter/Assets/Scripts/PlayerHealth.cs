@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer = null;
     [SerializeField] private BoxCollider2D boxCollider = null;
     [SerializeField] private GameObject shield = null;
+    [SerializeField] private string explosionRef = null;
 
     private void Start()
     {
@@ -38,6 +39,8 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthBar();
         if (currentHealthPoints <= 0f)
         {
+            VFXPool.instance.Spawn(transform.position);
+            SoundPool.instance.Spawn(transform.position, explosionRef);
             GameManager.instance.SetRespawning(true);
             GameManager.instance.playerLives--;
             spriteRenderer.enabled = false;

@@ -93,7 +93,6 @@ public class PowerUpUI : MonoBehaviour
                 bombWordDisplay.text = bombSliders[bombAmount - 1].GetComponentInChildren<TMP_Text>();
             wordManager.Bomb();
             bombAmount--;
-            Debug.Log($"{bombAmount} bombs left!");
             bombWordDisplay.word.wordTyped = false;
             bombCharge = StartCoroutine(SliderCharge(bombSliders[bombAmount + 1], bombRechargeTimer, true, val));
         }
