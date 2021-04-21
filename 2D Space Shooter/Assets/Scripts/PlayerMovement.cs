@@ -17,16 +17,13 @@ public class PlayerMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
     }
 
+    private void Awake() => instance = this;
     private void Start()
     {
-        instance = this;
         GameManager.instance.playerTransform = transform;
         moveTarget = transform.position;
-        //moveField = FindObjectOfType<MoveField>();
     }
 
-    private void Update()
-    {
-        MoveShip();
-    }
+    private void Update() => MoveShip();
+
 }

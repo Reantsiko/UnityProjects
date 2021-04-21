@@ -18,18 +18,20 @@ public class WaveConfiguration : ScriptableObject
     public GameObject GetEnemyPrefab() => enemyPrefab;
     public List<Transform> GetWayPoints()
     {
-        var waveWayPoints = new List<Transform>();
-
-        foreach (Transform waypoint in pathPrefab.transform)
-            waveWayPoints.Add(waypoint);
-
-        return waveWayPoints;
+        if (pathPrefab != null)
+        {
+            var waveWayPoints = new List<Transform>();
+            foreach (Transform waypoint in pathPrefab.transform)
+                waveWayPoints.Add(waypoint);
+            return waveWayPoints;
+        }
+        return PathCreator.instance.GetGeneratedPath();
     }
 
     public void PickEnemy() => enemyPrefab = enemiesPrefab[Random.Range(0, enemiesPrefab.Length)];
     public float GetTimeBetweenSpawns() => timeBetweenSpawns; 
     public float GetSpawnRandomFactor() => spawnRandomFactor; 
     public float GetMoveSpeed() => moveSpeed;
-    public int GetNumberOfEnemies() => numberOfEnemies; 
+    public int GetNumberOfEnemies() => numberOfEnemies;
     private void Start() => PickEnemy();
 }

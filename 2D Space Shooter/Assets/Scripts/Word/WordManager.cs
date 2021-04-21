@@ -25,7 +25,7 @@ public class WordManager : MonoBehaviour
     public void AddMovementWord(Vector3 moveTarget)
     {
         var wordDisplay = wordSpawner.SpawnWord(WordType.Movement, moveTarget);
-        Word word = new Word("test", wordDisplay, WordType.Movement, moveTarget);
+        Word word = new Word(WordLists.instance.GetRandomMovementWord(), wordDisplay, WordType.Movement, moveTarget);
         words.Add(word);
         wordDisplay.SetWord(word.word, word);
     }

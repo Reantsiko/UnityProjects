@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+	[SerializeField] private float waitTimeBetweenWaves = 0.5f;
 	[SerializeField] GameObject enemySpawner;
 	[SerializeField] List<WaveConfiguration> waveConfigs;
 	[SerializeField] int startingWave = 0;
@@ -12,6 +13,7 @@ public class EnemySpawner : MonoBehaviour
 
 	IEnumerator Start()
 	{
+		yield return new WaitForSeconds(waitTimeBetweenWaves);
 		do
 		{
 			yield return StartCoroutine(SpawnAllWaves());
@@ -25,6 +27,7 @@ public class EnemySpawner : MonoBehaviour
 			var waveToSpawn = waveConfigs[waveIndex];
 			yield return StartCoroutine(SpawnAllEnemiesInWave(waveToSpawn));
 		}
+		yield return new WaitForSeconds(waitTimeBetweenWaves);
 	}
 
 	IEnumerator SpawnRandomWave()
@@ -40,14 +43,15 @@ public class EnemySpawner : MonoBehaviour
 	{
 		int spawnedEnemies = 0;
 		waveConfig.PickEnemy();
+		var pathing = waveConfig.GetWayPoints();
 		while (spawnedEnemies < waveConfig.GetNumberOfEnemies())
 		{
 			var newEnemy = Instantiate(waveConfig.GetEnemyPrefab(),
-						waveConfig.GetWayPoints()[startingWave].transform.position,
+						pathing[0].position,
 						Quaternion.identity);
 			newEnemy.transform.parent = enemySpawner.transform;
 			spawnedEnemies++;
-			newEnemy.GetComponent<EnemyPathing>().SetWaveConfiguration(waveConfig);
+			newEnemy.GetComponent<EnemyPathing>().SetWaveConfiguration(waveConfig, pathing);
 			yield return new WaitForSeconds(waveConfig.GetTimeBetweenSpawns());
 		}
 	}
