@@ -23,6 +23,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject gameOverMenu = null;
     [SerializeField] private GameObject recordText = null;
     [SerializeField] private TMP_Text finalScoreText = null;
+    [SerializeField] private TMP_Text playerLivesText = null;
     [SerializeField] private bool isPaused = false;
 
     public void StartGame(int toSet)
@@ -57,6 +58,7 @@ public class Menu : MonoBehaviour
     public void LoadMainMenu()
     {
         audioSource?.UnPause();
+        Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(0);
     }
 
@@ -79,6 +81,12 @@ public class Menu : MonoBehaviour
         if (sceneBuildIndex == 0) return;
         if (Input.GetKeyDown(KeyCode.Escape) && GameManager.instance.playerLives >= 0)
             PauseGame();
+    }
+
+    public void UpdatePlayerLives()
+    {
+        if (playerLivesText == null) return;
+        playerLivesText.text = $"x{(GameManager.instance.playerLives >= 0 ? GameManager.instance.playerLives : 0)}";
     }
 
     public void PauseGame()

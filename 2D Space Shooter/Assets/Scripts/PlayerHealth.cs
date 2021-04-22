@@ -23,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
         if (boxCollider == null)
             boxCollider = GetComponent<BoxCollider2D>();
         UpdateHealthBar();
+        GameManager.instance.menu.UpdatePlayerLives();
     }
 
     public void ActivateShield() => shield?.SetActive(true);
@@ -71,6 +72,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void SpawnPlayer()
     {
+        GameManager.instance.menu.UpdatePlayerLives();
         GameManager.instance.SetRespawning(false);
         currentHealthPoints = 1f;
         UpdateHealthBar();
