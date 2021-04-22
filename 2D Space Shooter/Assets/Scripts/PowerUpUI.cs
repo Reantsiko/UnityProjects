@@ -47,7 +47,9 @@ public class PowerUpUI : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
         if (isBomb)
+        {
             bombWordDisplay.text = slider.GetComponentInChildren<TMP_Text>();
+        }
         else
             shieldWordDisplay.text = slider.GetComponentInChildren<TMP_Text>();
         CheckNextCharge(isBomb);
@@ -59,9 +61,7 @@ public class PowerUpUI : MonoBehaviour
         {
             bombAmount++;
             if (bombAmount + 1 < bombSliders.Length)
-            {
                 bombCharge = StartCoroutine(SliderCharge(bombSliders[bombAmount + 1], bombRechargeTimer, true));
-            }
             else
                 bombCharge = null;
         }
@@ -89,6 +89,7 @@ public class PowerUpUI : MonoBehaviour
                 bombSliders[bombAmount + 1].value = 0f;
                 bombSliders[bombAmount + 1].gameObject.SetActive(false);
             }
+            bombWordDisplay.text.text = $"<color=white>bomb</color>";
             if (bombAmount > 0)
                 bombWordDisplay.text = bombSliders[bombAmount - 1].GetComponentInChildren<TMP_Text>();
             wordManager.Bomb();
@@ -110,6 +111,7 @@ public class PowerUpUI : MonoBehaviour
                 shieldSliders[shieldAmount + 1].value = 0f;
                 shieldSliders[shieldAmount + 1].gameObject.SetActive(false);
             }
+            shieldWordDisplay.text.text = $"<color=white>shield</color>";
             if (shieldAmount > 0)
                 shieldWordDisplay.text = shieldSliders[shieldAmount - 1].GetComponentInChildren<TMP_Text>();
             shieldAmount--;
@@ -117,14 +119,6 @@ public class PowerUpUI : MonoBehaviour
             shieldWordDisplay.word.wordTyped = false;
             shieldCharge = StartCoroutine(SliderCharge(shieldSliders[shieldAmount + 1], shieldRechargeTimer, false, val));
         }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            UseBomb();
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            UseShield();
     }
 
     public void StopBombCharging()

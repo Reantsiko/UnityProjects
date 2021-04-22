@@ -4888,7 +4888,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  bombRechargeTimer: 120
+  bombRechargeTimer: 90
   bombSliders:
   - {fileID: 344099304}
   - {fileID: 135899560}
