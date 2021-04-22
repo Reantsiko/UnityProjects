@@ -1202,6 +1202,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7921346169209017362, guid: 7817952f72a784943bcedd0b47f17769,
+        type: 3}
+      propertyPath: playerLives
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7921346169209017363, guid: 7817952f72a784943bcedd0b47f17769,
         type: 3}
       propertyPath: m_RootOrder
@@ -3328,6 +3333,7 @@ MonoBehaviour:
   gameOverMenu: {fileID: 0}
   recordText: {fileID: 0}
   finalScoreText: {fileID: 0}
+  playerLivesText: {fileID: 0}
   isPaused: 0
 --- !u!1 &1270980904
 GameObject:

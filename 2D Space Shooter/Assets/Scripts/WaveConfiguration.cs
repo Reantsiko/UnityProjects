@@ -11,6 +11,9 @@ public class WaveConfiguration : ScriptableObject
     [SerializeField] private float spawnRandomFactor = 0.3f;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private int numberOfEnemies = 1;
+    [SerializeField] private bool randomizeEnemyAmount;
+    [SerializeField] private int minAmount = 2;
+    [SerializeField] private int maxAmount = 5;
     [SerializeField] private Difficulty difficulty = Difficulty.Easy;
 
     private GameObject enemyPrefab;
@@ -32,6 +35,11 @@ public class WaveConfiguration : ScriptableObject
     public float GetTimeBetweenSpawns() => timeBetweenSpawns; 
     public float GetSpawnRandomFactor() => spawnRandomFactor; 
     public float GetMoveSpeed() => moveSpeed;
-    public int GetNumberOfEnemies() => numberOfEnemies;
+    public int GetNumberOfEnemies()
+    {
+        if (randomizeEnemyAmount)
+            return Random.Range(minAmount, maxAmount + 1);
+        return numberOfEnemies;
+    }
     private void Start() => PickEnemy();
 }

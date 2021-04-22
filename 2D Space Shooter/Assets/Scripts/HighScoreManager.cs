@@ -57,9 +57,10 @@ public class HighScoreManager : MonoBehaviour
                     var temp = highScores[i];
                     highScores[i] = score;
                     score = temp;
-                    SaveScore(playerPrefKeys[i], highScores[i]);
                 }
+                SaveScore(playerPrefKeys[i], highScores[i]);
             }
+            PlayerPrefs.Save();
             return true;
         }
         return false;

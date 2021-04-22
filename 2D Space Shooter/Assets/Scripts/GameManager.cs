@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     public Transform playerTransform = null;
     public int playerLives = 3;
+    [SerializeField] private int scoreReqForLife = 10000;
     public Menu menu;
     [SerializeField] public Difficulty difficulty = Difficulty.Easy;
     [SerializeField] private TMP_Text scoreText = null;
@@ -18,7 +19,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int veryHardScore = 4000;
     [SerializeField] private int impossibleScore = 5000;
     [SerializeField] private string highestDifficultyReachedKey = "highest";
-    private int playerScore;
+    private int playerScore = 0;
+    private int livesScore = 0;
+    
     private bool respawning = false;
 
     private void Awake()
@@ -35,6 +38,7 @@ public class GameManager : MonoBehaviour
     public void UpdateScore(int scoreChange)
     {
         playerScore += scoreChange;
+        LivesScore(scoreChange);
         var scoreAsText = playerScore.ToString();
         if (scoreText != null)
         {
@@ -44,6 +48,17 @@ public class GameManager : MonoBehaviour
                 scoreText.text = scoreAsText;
         }
         DifficultyIncrease();
+    }
+
+    private void LivesScore(int scoreChange)
+    {
+        livesScore += scoreChange;
+        if (livesScore >= scoreReqForLife)
+        {
+            playerLives++;
+            livesScore -= scoreReqForLife;
+            menu.UpdatePlayerLives();
+        }
     }
 
     private void DifficultyIncrease()

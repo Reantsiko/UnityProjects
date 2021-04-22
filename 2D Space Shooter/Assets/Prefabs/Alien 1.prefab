@@ -58,7 +58,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &425357771
 MonoBehaviour:
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 2038489843129119368}
   - component: {fileID: -3978085048187547181}
   m_Layer: 0
-  m_Name: TestEnemy
+  m_Name: Alien 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
