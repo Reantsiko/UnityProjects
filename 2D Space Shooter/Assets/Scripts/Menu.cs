@@ -8,8 +8,10 @@ public class Menu : MonoBehaviour
 {
     [Header("General")]
     [SerializeField] private int sceneBuildIndex = 0;
-    [SerializeField] private Image soundImage = null;
-    [SerializeField] private Sprite[] soundSprites = null;
+    [SerializeField] private Image musicImage = null;
+    [SerializeField] private Image sfxImage = null;
+    [SerializeField] private Sprite[] musicSprites = null;
+    [SerializeField] private Sprite[] sfxSprites = null;
     [SerializeField] private AudioSource audioSource = null;
     
     [Header("Main Menu")]
@@ -46,13 +48,31 @@ public class Menu : MonoBehaviour
     }
     public void QuitGame() => Application.Quit();
 
-    public void SetSound()
+    public void SetMusic()
     {
-        bool val = !SoundHandler.instance.GetIsMuted();
-        SoundHandler.instance.SetSound(val);
-        int img = val ? 1 : 0;
-        if (soundImage != null)
-            soundImage.sprite = soundSprites[img];
+        SoundHandler.instance.ChangeMuteMusic();
+        SetSoundImage();
+    }
+
+    public void SetSFX()
+    {
+        SoundHandler.instance.isSoundEffectMuted = !SoundHandler.instance.isSoundEffectMuted;
+        SoundHandler.instance.ChangeMuteSoundEffect();
+        SetSFXImage();
+    }
+
+    private void SetSoundImage()
+    {
+        int img = SoundHandler.instance.GetIsMuted() == true ? 1 : 0;
+        if (musicImage != null && musicSprites != null && musicSprites.Length == 2)
+            musicImage.sprite = musicSprites[img];
+    }
+
+    private void SetSFXImage()
+    {
+        int img = SoundHandler.instance.isSoundEffectMuted == true ? 1 : 0;
+        if (sfxImage != null && sfxSprites != null && sfxSprites.Length == 2)
+            sfxImage.sprite = sfxSprites[img];
     }
 
     public void LoadMainMenu()
@@ -67,9 +87,12 @@ public class Menu : MonoBehaviour
         GameManager.instance.menu = this;
         audioSource = FindObjectOfType<AudioSource>();
         sceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
-        soundImage.sprite = soundSprites[audioSource.mute == true ? 1 : 0];
+        musicImage.sprite = musicSprites[audioSource.mute == true ? 1 : 0];
         if (sceneBuildIndex == 0)
             UpdateScores();
+        SoundHandler.instance.ClearSoundEffectSources();
+        SetSoundImage();
+        SetSFXImage();
 #if UNITY_WEBGL
         if (quitButton != null)
             quitButton.SetActive(false);

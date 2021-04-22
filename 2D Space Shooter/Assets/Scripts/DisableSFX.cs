@@ -12,12 +12,14 @@ public class DisableSFX : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.mute = SoundHandler.instance.isSoundEffectMuted;
+        SoundHandler.instance.AddSoundEffectSource(audioSource);
     }
 
     private void OnEnable()
     {
-        if (audioSource != null)
-            audioSource.mute = SoundHandler.instance.GetIsMuted();
+        /*if (audioSource != null)
+            audioSource.mute = SoundHandler.instance.isSoundEffectMuted;*/
         if (audioSource != null && clip != null)
         {
             audioSource.PlayOneShot(clip, volume);

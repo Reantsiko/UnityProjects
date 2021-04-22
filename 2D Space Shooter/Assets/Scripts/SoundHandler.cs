@@ -6,8 +6,11 @@ using System.Linq;
 public class SoundHandler : MonoBehaviour
 {
     public static SoundHandler instance;
+    public bool isMusicMuted;
+    public bool isSoundEffectMuted;
     [SerializeField] private AudioClip[] music = null;
-    [SerializeField] private AudioSource audioSource = null;
+    [SerializeField] private AudioSource musicSource = null;
+    [SerializeField] private List<AudioSource> soundEffectSources = new List<AudioSource>();
     private int currentTrack = 0;
     private void Awake()
     {
@@ -23,33 +26,56 @@ public class SoundHandler : MonoBehaviour
     public void PauseUnpauseMusic(bool pause)
     {
         if (pause)
-            audioSource.Pause();
+            musicSource.Pause();
         else
-            audioSource.UnPause();
+            musicSource.UnPause();
     }
 
-    private void Start() => audioSource = GetComponent<AudioSource>();
+    private void Start() => musicSource = GetComponent<AudioSource>();
+
+    public void ChangeMuteMusic() => musicSource.mute = !musicSource.mute;
+    public void ChangeMuteSoundEffect() => soundEffectSources.ForEach(sfx => sfx.mute = isSoundEffectMuted);
+    public void ClearSoundEffectSources() => soundEffectSources.Clear();
 
     private void Update()
     {
-        if (audioSource.time == audioSource.clip.length)
+#if UNITY_STANDALONE
+        if (musicSource.time == musicSource.clip.length)
         {
             currentTrack++;
             if (currentTrack >= music.Length)
                     currentTrack = 0;
-            audioSource.clip = music[currentTrack];
-            audioSource.Play();
+            musicSource.clip = music[currentTrack];
+            musicSource.Play();
         }
+#endif
+#if UNITY_WEBGL
+        if (!musicSource.isPlaying)
+        {
+            currentTrack++;
+            if (currentTrack >= music.Length)
+                currentTrack = 0;
+            musicSource.clip = music[currentTrack];
+            musicSource.Play();
+        }
+#endif
     }
 
     public void SetSound(bool val)
     {
-        if (audioSource == null) return;
+        if (musicSource == null) return;
+        musicSource.mute = val;
+    }
 
-        audioSource.mute = val;
+    public void AddSoundEffectSource(AudioSource toAdd) => soundEffectSources.Add(toAdd);
+
+
+    public void SetSoundEffect(bool val)
+    {
         var sources = FindObjectsOfType<AudioSource>().ToList();
+        
         sources.ForEach(s => s.mute = val);
     }
 
-    public bool GetIsMuted() => audioSource.mute;
+    public bool GetIsMuted() => musicSource.mute;
 }
