@@ -15,7 +15,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private AudioSource audioSource = null;
     
     [Header("Main Menu")]
-    [SerializeField] private GameObject[] menus = null;
+    [SerializeField] private List<GameObject> menus = null;
     [SerializeField] private GameObject quitButton = null;
     [SerializeField] private List<TMP_Text> scoreTexts = null;
 
@@ -26,7 +26,7 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject recordText = null;
     [SerializeField] private TMP_Text finalScoreText = null;
     [SerializeField] private TMP_Text playerLivesText = null;
-    [SerializeField] private bool isPaused = false;
+    [SerializeField] public bool isPaused = false;
 
     public void StartGame(int toSet)
     {
@@ -116,18 +116,23 @@ public class Menu : MonoBehaviour
     {
         isPaused = !isPaused;
         if (isPaused)
+        {
             audioSource?.Pause();
+            pauseMenu?.SetActive(isPaused);
+        }
         else
+        {
             audioSource?.UnPause();
-        pauseMenu?.SetActive(isPaused);
+            menus.ForEach(m => m?.SetActive(false));
+        }
         Time.timeScale = isPaused ? 0 : 1;
     }
 
     public void GameOver(int playerScore)
     {
-        gameOverlay.SetActive(false);
-        pauseMenu.SetActive(false);
-        gameOverMenu.SetActive(true);
+        gameOverlay?.SetActive(false);
+        pauseMenu?.SetActive(false);
+        gameOverMenu?.SetActive(true);
         recordText?.SetActive(HighScoreManager.instance.CheckPlayerScore(playerScore));
         if (finalScoreText != null)
             finalScoreText.text = playerScore.ToString();

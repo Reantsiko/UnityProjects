@@ -1,16 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 public class SoundHandler : MonoBehaviour
 {
     public static SoundHandler instance;
+    [Header("Music Related")]
     public bool isMusicMuted;
-    public bool isSoundEffectMuted;
+    [Range(0f,1f)] public float musicVolume = 1f;
     [SerializeField] private AudioClip[] music = null;
     [SerializeField] private AudioSource musicSource = null;
+    [SerializeField] private string musicKey = null;
+    [Header("SFX Related")]
+    public bool isSoundEffectMuted;
+    [Range(0f, 1f)] public float sfxVolume = 1f;
     [SerializeField] private List<AudioSource> soundEffectSources = new List<AudioSource>();
+    [SerializeField] private string sfxKey = null;
+
     private int currentTrack = 0;
     private void Awake()
     {
@@ -31,26 +39,33 @@ public class SoundHandler : MonoBehaviour
             musicSource.UnPause();
     }
 
-    private void Start() => musicSource = GetComponent<AudioSource>();
+    private void Start()
+    {
+        musicSource = GetComponent<AudioSource>();
+        //musicVolume = LoadVolumes(musicKey);
+        sfxVolume = LoadVolumes(sfxKey);
+        ChangeMusicVolume(LoadVolumes(musicKey));
+        ChangeSFXVolume(sfxVolume);
+    }
 
     public void ChangeMuteMusic() => musicSource.mute = !musicSource.mute;
     public void ChangeMuteSoundEffect() => soundEffectSources.ForEach(sfx => sfx.mute = isSoundEffectMuted);
     public void ClearSoundEffectSources() => soundEffectSources.Clear();
+    public void ChangeMusicVolume(float val)
+    {
+        if (musicSource != null)
+            musicSource.volume = val;//musicVolume;
+    }
+
+    public void ChangeSFXVolume(float val = 1f)
+    {
+        sfxVolume = val;
+        soundEffectSources.ForEach(sfx => sfx.volume = sfxVolume);
+    }
 
     private void Update()
     {
-#if UNITY_STANDALONE
-        if (musicSource.time == musicSource.clip.length)
-        {
-            currentTrack++;
-            if (currentTrack >= music.Length)
-                    currentTrack = 0;
-            musicSource.clip = music[currentTrack];
-            musicSource.Play();
-        }
-#endif
-#if UNITY_WEBGL
-        if (!musicSource.isPlaying)
+        if (GameManager.instance.menu != null && !GameManager.instance.menu.isPaused && !musicSource.isPlaying)
         {
             currentTrack++;
             if (currentTrack >= music.Length)
@@ -58,7 +73,6 @@ public class SoundHandler : MonoBehaviour
             musicSource.clip = music[currentTrack];
             musicSource.Play();
         }
-#endif
     }
 
     public void SetSound(bool val)
@@ -76,6 +90,10 @@ public class SoundHandler : MonoBehaviour
         
         sources.ForEach(s => s.mute = val);
     }
-
     public bool GetIsMuted() => musicSource.mute;
+    private float LoadVolumes(string key)
+    {
+        if (key == null || !PlayerPrefs.HasKey(key)) return 1f;
+        return PlayerPrefs.GetFloat(key);
+    }
 }

@@ -12,6 +12,7 @@ public class DisableSFX : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.volume = SoundHandler.instance.sfxVolume;
         audioSource.mute = SoundHandler.instance.isSoundEffectMuted;
         SoundHandler.instance.AddSoundEffectSource(audioSource);
     }
