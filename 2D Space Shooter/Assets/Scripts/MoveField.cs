@@ -36,17 +36,19 @@ public class MoveField : MonoBehaviour
         {
             for (int y = 0; y < currAllowedHeight; y++)
             {
-                if (CheckPlayerPos(x, y))
-                    continue;
+                /*if (CheckPlayerPos(x, y))
+                    continue;*/
                 moveableField.SetGridObject(x, y, moveableField.GetCenterOfCell2D(x, y));
-                SpawnMovementWord();
+                //SpawnMovementWord(x, y);
+                if (!CheckPlayerPos(x, y))
+                    wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));
             }
         }
     }
 
     private bool CheckPlayerPos(int x, int y)
     {
-        if (PlayerMovement.instance.transform.position == moveableField.GetCenterOfCell2D(x, y))
+        if (PlayerMovement.instance.GetMoveTarget() == moveableField.GetCenterOfCell2D(x, y))
         {
             playerPos.x = x;
             playerPos.y = y;
@@ -55,23 +57,35 @@ public class MoveField : MonoBehaviour
         return false;
     }
 
-    private IEnumerator WaitForSpawnNewMovementWord()
+    /*private IEnumerator WaitForSpawnNewMovementWord()
     {
         yield return new WaitForSeconds(waitTime);
         SpawnMovementWord();
-    }
+    }*/
 
-    private void SpawnMovementWord()
+    private void SpawnMovementWord(int xPos, int yPos)
     {
-        var xPos = Random.Range(0, width);
-        var yPos = Random.Range(0, currAllowedHeight);
-        if (xPos == playerPos.x && yPos == playerPos.y)
+        /*var xPos = Random.Range(0, width);
+        var yPos = Random.Range(0, currAllowedHeight);*/
+        /*if (xPos == playerPos.x && yPos == playerPos.y)
         {
             SpawnMovementWord();
             return;
-        }
-        if (moveableField.GetGridObject(xPos, yPos) == default)
+        }*/
+        /*var temp = moveableField.GetGridObject(xPos, yPos);
+        Debug.Log(temp);
+        if (moveableField.GetGridObject(xPos, yPos) == default)*/
             wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(xPos, yPos));
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            var xPos = Random.Range(0, width);
+            var yPos = Random.Range(0, currAllowedHeight);
+            if (!CheckPlayerPos(xPos, yPos))
+                wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(xPos, yPos));
+        }
     }
 }
 
