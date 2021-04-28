@@ -1,14 +1,12 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
 /*
- * The buttons that will be used to set the keybindings need to have the exact same name as the command string
- * of the keybind.
- * eg: command in the structure == forward ==> button's name must be forward
- * On the button's in the inspector under "On Click()" press on the + sign and drag the object
- * on which this script is placed. Add the function SetButton and then drag the button in the slot under it.
+ * On the buttons in the inspector under "On Click()" press on the + sign and drag the object
+ * on which this script is placed. Select the function SetButton and then drag the button into the slot under it.
  * You can also add a tag to the button, this has to be the same as the scriptable object's Player string,
  * to differentiate between keybindings in local co-op.
  * 
@@ -31,7 +29,7 @@ public class KeybindHandler : MonoBehaviour
         for (int i = 0; i < playerKeybinds.Length; i++)
         {
             playerKeybinds[i].LoadKeys();
-            playerKeybinds[i].defaultKeybindings.FillDictionary();
+            playerKeybinds[i].GetDefault().FillDictionary();
             mouseSensititivy[i].value = playerKeybinds[i].GetMouseSensitivity();
         }
         
@@ -49,11 +47,12 @@ public class KeybindHandler : MonoBehaviour
         var keybindCommand = pressedButton.GetComponentInParent<KeybindCommand>();
         if (!keybindCommand)
         {
-            Debug.LogError("No KeybindCommand script on " + pressedButton.name);
+            Debug.LogError($"No KeybindCommand script on {pressedButton.name}");
             return;
         }
 
-        var textComponent = pressedButton.GetComponentInChildren<TMP_Text>(); //change this depending on how your button is set up
+        //change this depending on how your button is set up
+        var textComponent = pressedButton.GetComponentInChildren<TMP_Text>(); 
         if (!textComponent)
         {
             Debug.LogError("No text on button");
@@ -138,47 +137,46 @@ public class KeybindHandler : MonoBehaviour
 
     private void GetCorrectPlayer(string p, KeybindEnum command, KeyCode keyValue)
     {
-        for (int i = 0; i < playerKeybinds.Length; i++)
-        {
-            if (p == playerKeybinds[i].GetPlayerIdentity())
-                playerKeybinds[i].SetKey(command, keyValue);
-        }
+        var temp = playerKeybinds.ToList().FindIndex(playerIndex => string.Compare(playerIndex.GetPlayerIdentity(), p) == 0);
+        if (temp != -1)
+            playerKeybinds[temp].SetKey(command, keyValue);
     }
     /*
      * Updates the UI
+     * This method can use some improvement.
     */
     private void SetGameObjectTexts(bool setCommandTexts)
     {
         for (int i = 0; i < playerKeybinds.Length; i++)
         {
             var playerInput = playerKeybinds[i].GetPlayerInput();
-            for (int j = 0; j < keyBindText.Length; j++)
+            var tempList = keyBindText.ToList().Where(t => t.tag == playerKeybinds[i].GetPlayerIdentity()).ToList();
+
+            if (tempList.Count == 0)
             {
-                var command = keyBindText[j].GetComponent<KeybindCommand>().GetCommand();
-                var buttonText = keyBindText[j].GetComponentInChildren<Button>().GetComponentInChildren<TMP_Text>();
+                Debug.LogError($"Length of found TMP_Text items is: {tempList.Count}");
+                return;
+            }
+
+            for (int j = 0; j < tempList.Count; j++)
+            {
+                var command = tempList[j].GetComponent<KeybindCommand>().GetCommand();
+                var buttonText = tempList[j].GetComponentInChildren<Button>().GetComponentInChildren<TMP_Text>();
                 var comPos = FindCorrectCommand(command, playerInput);
                 if (buttonText.CompareTag(playerKeybinds[i].GetPlayerIdentity()))
                 {
-                    if (setCommandTexts)
-                        keyBindText[j].text = playerInput[comPos].commandName;
+                    if (comPos > -1 && setCommandTexts)
+                        tempList[j].text = playerInput[comPos].commandName;
                     buttonText.text = playerKeybinds[i].GetKeyAsString(command);
                 }
             }
-            mouseSensititivy[i].value = playerKeybinds[i].GetMouseSensitivity();
+            if (i < mouseSensititivy.Length)
+                mouseSensititivy[i].value = playerKeybinds[i].GetMouseSensitivity();
         }
     }
+
     /*
      * Method to help organize the UI.
     */
-    private int FindCorrectCommand(KeybindEnum toFind, InputKeys[] searchArea)
-    {
-        int i = 0;
-        foreach(var a in searchArea)
-        {
-            if (a.command == toFind)
-                return i;
-            i++;
-        }
-        return 0;
-    }
+    private int FindCorrectCommand(KeybindEnum toFind, InputKeys[] searchArea) => searchArea.ToList().FindIndex(a => a.command == toFind);
 }

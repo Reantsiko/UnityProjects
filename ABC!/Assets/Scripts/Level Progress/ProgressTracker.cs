@@ -29,24 +29,6 @@ public static class ProgressTracker
         progress.InputLoaded(progress);
     }
 
-    
-
-    /*public static void MindBlown()
-    {
-        Debug.Log(Something<int>(MultiplyByTwo, 2));
-    }
-
-    private static T Something<T>(Func<T, T> methodName, T val)
-    {
-        T res = methodName(val);
-        return res;
-    }
-
-    private static int MultiplyByTwo(int val)
-    {
-        return val * 2;
-    }*/
-
      public static SaveData GetSaveData() { return progress; }
     public static void LevelCompleted(int level)
     {

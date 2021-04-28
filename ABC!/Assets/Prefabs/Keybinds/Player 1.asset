@@ -10,43 +10,43 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d00bdf25df2d4d478bcfe2c4acd95e5, type: 3}
-  m_Name: Player
+  m_Name: Player 1
   m_EditorClassIdentifier: 
-  player: P1
+  player: P2
   playerInput:
   - commandName: Forward
     command: 1
-    keyCode: 119
+    keyCode: 273
   - commandName: Backward
     command: 2
-    keyCode: 115
+    keyCode: 274
   - commandName: Left Strafe
     command: 3
-    keyCode: 97
+    keyCode: 276
   - commandName: Right Strafe
     command: 4
-    keyCode: 100
+    keyCode: 0
   - commandName: Jump
     command: 5
-    keyCode: 32
+    keyCode: 0
   - commandName: Crouch
     command: 6
-    keyCode: 306
+    keyCode: 0
   - commandName: Pick Up
     command: 7
-    keyCode: 323
+    keyCode: 0
   - commandName: Throw Item
     command: 8
-    keyCode: 324
+    keyCode: 0
   - commandName: Shield
     command: 9
-    keyCode: 113
+    keyCode: 0
   - commandName: Strength
     command: 10
-    keyCode: 101
+    keyCode: 0
   - commandName: Menu
     command: 11
-    keyCode: 27
+    keyCode: 0
   - commandName: None
     command: 0
     keyCode: 0
@@ -55,4 +55,4 @@ MonoBehaviour:
   defaultKeybindings: {fileID: 11400000, guid: 4936043195eb45043a7bd3c1a4c89f83, type: 2}
   overlappingKeybindsChecker:
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: d4a7572302ce0a24b8a4a3cd485bbfe9, type: 2}
+  - {fileID: 11400000, guid: bcc924858efa72a46bc60cdb6ed380b0, type: 2}

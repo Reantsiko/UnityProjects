@@ -7,12 +7,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 public static class ProgressSaver
 {
 #if UNITY_STANDALONE
-    static private string path = Application.dataPath + "/progress.abc";
+    static private string path = $"{Application.dataPath}/progress.abc";
     public static void SaveProgressData(SaveData data)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        //string path = Application.dataPath + "/progress.sav";
-        Debug.Log(path);
         FileStream stream = new FileStream(path, FileMode.Create);
         formatter.Serialize(stream, data);
         stream.Close();
@@ -23,13 +21,10 @@ public static class ProgressSaver
         if (!File.Exists(path)) return null;
 
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path/*Application.dataPath + "/progress.sav"*/, FileMode.Open);
+        FileStream stream = new FileStream(path, FileMode.Open);
         SaveData data = formatter.Deserialize(stream) as SaveData;
         stream.Close();
         return data;
     }
-#endif
-#if UNITY_WEBGL
-    
 #endif
 }
