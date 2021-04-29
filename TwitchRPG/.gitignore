@@ -8,7 +8,8 @@
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
-/[Aa]ssets/Secrets.cs
+/[Aa]ssets/Scripts/Secrets.cs
+/[Aa]ssets/Scripts/Secrets.cs.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
