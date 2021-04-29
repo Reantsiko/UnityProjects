@@ -309,6 +309,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9487fcaa55287624791553033f528687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waitTime: 60
+  disconnectTime: 300
   capsulePrefab: {fileID: 8753173103386924961, guid: 70903bab2216af545a55cf2e3693cd5d,
     type: 3}
 --- !u!1 &1425351673

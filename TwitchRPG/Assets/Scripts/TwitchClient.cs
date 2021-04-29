@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TwitchLib.Client.Models;
 using TwitchLib.Unity;
@@ -8,12 +9,15 @@ public class TwitchClient : MonoBehaviour
 {
     public Client client;
     private string channel_name = "reantsikox";
+    public float waitTime = 60f;
+    public float disconnectTime = 300f;
     [SerializeField] private GameObject capsulePrefab = null;
     public Dictionary<string, GameObject> createdPlayers = new Dictionary<string, GameObject>();
     // Start is called before the first frame update
     void Start()
     {
         Application.runInBackground = true;
+        StartCoroutine(CheckIfPlayersAreStillOnline());
         ConnectionCredentials credentials = new ConnectionCredentials("twitchsurvivalrpg", Secrets.bot_access_token);
         client = new Client();
         client.Initialize(credentials, channel_name);
@@ -58,6 +62,7 @@ public class TwitchClient : MonoBehaviour
                         var p = instance.GetComponent<Player>();
                         p.playerName = playerName;
                         p.UpdateNameText();
+                        p.lastCommandTime = Time.time;
                         createdPlayers.Add(playerName, instance);
                         client.SendMessage(client.JoinedChannels[0], $"{playerName} has joined the game!");
                     }
@@ -69,5 +74,19 @@ public class TwitchClient : MonoBehaviour
         }
         else
             client.SendMessage(client.JoinedChannels[0], $"Does not compute!");
+    }
+
+    private IEnumerator CheckIfPlayersAreStillOnline()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+
+            var temp = (from p in createdPlayers.Values 
+                        where p.GetComponent<Player>().isOnline == true 
+                        select p.GetComponent<Player>()).ToList();
+            temp.ForEach(p => p.isOnline = p.lastCommandTime + disconnectTime > Time.time ? true : false);
+            temp.ForEach(p => p.UpdateNameText());
+        }
     }
 }
