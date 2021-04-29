@@ -9,6 +9,7 @@ public class TwitchClient : MonoBehaviour
     public Client client;
     private string channel_name = "reantsikox";
     [SerializeField] private GameObject capsulePrefab = null;
+    public Dictionary<string, GameObject> createdPlayers = new Dictionary<string, GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -34,27 +35,37 @@ public class TwitchClient : MonoBehaviour
         Debug.Log($"The bot just read a message in chat");
         Debug.Log($"{sender.ToString()}");
         Debug.Log($"{e.ChatMessage.Username} said {e.ChatMessage.Message}");
-        ParseMessage(e.ChatMessage.Message);
+        ParseMessage(e.ChatMessage.DisplayName, e.ChatMessage.Message);
     }
 
     private void Client_OnWhisperReceived(object sender, TwitchLib.Client.Events.OnWhisperReceivedArgs e)
     {
-        ParseMessage(e.WhisperMessage.Message);
+        ParseMessage(e.WhisperMessage.Username, e.WhisperMessage.Message);
     }
 
-    private void ParseMessage(string message)
+    private void ParseMessage(string playerName, string message)
     {
         var splitMessage = message.Split(' ');
         if (splitMessage.Length > 0 && !string.IsNullOrEmpty(splitMessage[0]) && splitMessage[0][0] == '!')
         {
             if (string.Compare(splitMessage[0], "!create") == 0)
             {
-                if (capsulePrefab != null)
+                if (!createdPlayers.ContainsKey(playerName))
                 {
-                    Instantiate(capsulePrefab, new Vector3(Random.Range(-5f, 5f), 1f, Random.Range(-7f, 23f)), Quaternion.identity);
-                    client.SendMessage(client.JoinedChannels[0], $"Created and Spawned a new capsule!");
+                    if (capsulePrefab != null)
+                    {
+                        var instance = Instantiate(capsulePrefab, new Vector3(Random.Range(-5f, 5f), 1f, Random.Range(-7f, 23f)), Quaternion.identity) as GameObject;
+                        var p = instance.GetComponent<Player>();
+                        p.playerName = playerName;
+                        p.UpdateNameText();
+                        createdPlayers.Add(playerName, instance);
+                        client.SendMessage(client.JoinedChannels[0], $"{playerName} has joined the game!");
+                    }
                 }
+                else
+                    client.SendMessage(client.JoinedChannels[0], $"@{playerName} you already created a character!");
             }
+            
         }
         else
             client.SendMessage(client.JoinedChannels[0], $"Does not compute!");
