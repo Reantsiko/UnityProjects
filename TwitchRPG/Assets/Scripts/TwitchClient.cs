@@ -7,17 +7,21 @@ using TwitchLib.Unity;
 
 public class TwitchClient : MonoBehaviour
 {
+    public static TwitchClient instance;
     public Client client;
+    public Parser parser;
     private string channel_name = "reantsikox";
-    public float waitTime = 60f;
-    public float disconnectTime = 300f;
-    [SerializeField] private GameObject capsulePrefab = null;
-    public Dictionary<string, GameObject> createdPlayers = new Dictionary<string, GameObject>();
-    // Start is called before the first frame update
+
+    private void Awake()
+    {
+        instance = this;
+        if (parser == null)
+            parser = FindObjectOfType<Parser>();
+    }
+
     void Start()
     {
-        Application.runInBackground = true;
-        StartCoroutine(CheckIfPlayersAreStillOnline());
+        Application.runInBackground = true;   
         ConnectionCredentials credentials = new ConnectionCredentials("twitchsurvivalrpg", Secrets.bot_access_token);
         client = new Client();
         client.Initialize(credentials, channel_name);
@@ -27,66 +31,16 @@ public class TwitchClient : MonoBehaviour
         client.Connect();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            client.SendMessage(client.JoinedChannels[0], $"This is a test message from the bot!");
-    }
+    private void Client_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e) => parser.ParseMessage(e);
+    private void Client_OnWhisperReceived(object sender, TwitchLib.Client.Events.OnWhisperReceivedArgs e) => parser.ParseMessage(e);
 
-    private void Client_OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
-    {
-        Debug.Log($"The bot just read a message in chat");
-        Debug.Log($"{sender.ToString()}");
-        Debug.Log($"{e.ChatMessage.Username} said {e.ChatMessage.Message}");
-        ParseMessage(e.ChatMessage.DisplayName, e.ChatMessage.Message);
-    }
+    
 
-    private void Client_OnWhisperReceived(object sender, TwitchLib.Client.Events.OnWhisperReceivedArgs e)
+    public void BotSendMessage(string userName, string message, bool isPrivateMessage)
     {
-        ParseMessage(e.WhisperMessage.Username, e.WhisperMessage.Message);
-    }
-
-    private void ParseMessage(string playerName, string message)
-    {
-        var splitMessage = message.Split(' ');
-        if (splitMessage.Length > 0 && !string.IsNullOrEmpty(splitMessage[0]) && splitMessage[0][0] == '!')
-        {
-            if (string.Compare(splitMessage[0], "!create") == 0)
-            {
-                if (!createdPlayers.ContainsKey(playerName))
-                {
-                    if (capsulePrefab != null)
-                    {
-                        var instance = Instantiate(capsulePrefab, new Vector3(Random.Range(-5f, 5f), 1f, Random.Range(-7f, 23f)), Quaternion.identity) as GameObject;
-                        var p = instance.GetComponent<Player>();
-                        p.playerName = playerName;
-                        p.UpdateNameText();
-                        p.lastCommandTime = Time.time;
-                        createdPlayers.Add(playerName, instance);
-                        client.SendMessage(client.JoinedChannels[0], $"{playerName} has joined the game!");
-                    }
-                }
-                else
-                    client.SendMessage(client.JoinedChannels[0], $"@{playerName} you already created a character!");
-            }
-            
-        }
-        else
-            client.SendMessage(client.JoinedChannels[0], $"Does not compute!");
-    }
-
-    private IEnumerator CheckIfPlayersAreStillOnline()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(waitTime);
-
-            var temp = (from p in createdPlayers.Values 
-                        where p.GetComponent<Player>().isOnline == true 
-                        select p.GetComponent<Player>()).ToList();
-            temp.ForEach(p => p.isOnline = p.lastCommandTime + disconnectTime > Time.time ? true : false);
-            temp.ForEach(p => p.UpdateNameText());
-        }
+        if (isPrivateMessage && !string.IsNullOrEmpty(userName))
+            client.SendWhisper(userName, message);
+        if (!isPrivateMessage)
+            client.SendMessage(client.JoinedChannels[0], message);
     }
 }
