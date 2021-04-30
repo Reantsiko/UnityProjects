@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using TwitchLib.Client.Models;
 using TwitchLib.Unity;
 
@@ -28,6 +25,7 @@ public class TwitchClient : MonoBehaviour
 
         client.OnMessageReceived += Client_OnMessageReceived;
         client.OnWhisperReceived += Client_OnWhisperReceived;
+
         client.Connect();
     }
 

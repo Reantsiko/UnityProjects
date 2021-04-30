@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+
 public class Parser : MonoBehaviour
 {
     public TwitchClient client;
     public Commands commands;
-    [SerializeField] private List<string> commandList;
+    private List<string> commandList;
     private void Start()
     {
         if (client == null)
@@ -45,38 +46,38 @@ public class Parser : MonoBehaviour
     {
         switch (cmd)
         {
+            case PlayerCommands.commands:
+                PrintCommands(userName);
+                break;
             case PlayerCommands.create:
-                CreatePlayer(userName, displayName, isPrivateMessage);
+                commands?.CreatePlayer(userName, displayName, isPrivateMessage);
                 break;
             case PlayerCommands.kill:
-                KillPlayer(userName);
+                commands?.KillPlayer(userName);
+                break;
+            /*case PlayerCommands.move:
+                MovePlayer(userName, displayName, splitMessage);
+                break;*/
+            default:
+                client.BotSendMessage(userName, $"@{displayName}, this command does not exist!", isPrivateMessage);
                 break;
         }
     }
 
-    private void CreatePlayer(string userName, string displayName, bool isPrivateMessage)
+    private void MovePlayer(string userName, string displayName, string[] splitMessage)
     {
-        if (!GamePlayers.instance.createdPlayers.ContainsKey(userName))
+        if (GamePlayers.instance.createdPlayers.ContainsKey(userName) == true)
         {
-            if (commands?.CreatePlayer(userName, displayName) == true)
-                client.BotSendMessage(userName, $"{displayName} has joined the game!", isPrivateMessage);
-            else
-                client.BotSendMessage(userName, $"{displayName}, there was an error on our side, could not create your character!", isPrivateMessage);
+            if (splitMessage.Length == 3 || splitMessage.Length == 5)
+                Debug.Log($"Correct amount of inputs\ndoes this print on next line?\nthis as well?\nor are they all on the same line?");
         }
         else
-            client.BotSendMessage(userName, $"{displayName}, you already created a character!", isPrivateMessage);
+            client.BotSendMessage(userName, $"{userName} you don't have a character to move!", false);
     }
 
-    private void KillPlayer(string userName)
+    private void PrintCommands(string userName)
     {
-        if (GamePlayers.instance.createdPlayers.ContainsKey(userName))
-        {
-            var temp = GamePlayers.instance.createdPlayers[userName];
-            GamePlayers.instance.createdPlayers.Remove(userName);
-            Destroy(temp);
-            client.BotSendMessage(userName, $"{userName} I have destroyed your character!", false);
-        }
-        else
-            client.BotSendMessage(userName, $"{userName} you don't have a character to remove!", false);
+        client.BotSendMessage(userName, $"The current commands are:", false);
+        commandList.ForEach(c => client.BotSendMessage(userName, $"{c}", false));        
     }
 }
