@@ -16,9 +16,6 @@ public class PlayerStats
 
     public int hp;
     public int mp;
-
-    public int currentExperience;
-    public int experienceForNextLevel;
     public PlayerStats(int lvl, int str, int dex, int cst, int chr, int intel)
     {
         level = lvl;
@@ -33,20 +30,6 @@ public class PlayerStats
 
         hp = maxHitPoints;
         mp = maxMagicPoints;
-
-        experienceForNextLevel = (int)(500 * level * 1.5);
     }
     public PlayerStats(){}
-
-    public void GainXP(int amountGained)
-    {
-        currentExperience += amountGained;
-        if (currentExperience > experienceForNextLevel)
-        {
-            level++;
-            var remainder = currentExperience - experienceForNextLevel;
-            experienceForNextLevel = (int)(500 * level * 1.5);
-            currentExperience = remainder;
-        }
-    }
 }

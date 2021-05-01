@@ -1,9 +1,23 @@
-﻿public enum PlayerCommands  {
-                                commands,
-                                create,
-                                kill
-                            }
+﻿public enum PlayerCommands
+{
+    commands,
+    create,
+    setClass,
+    setJob,
+    status
+}
 
-public enum PlayerClass { 
-                            warrior
-                        }
+public enum PClass
+{
+    warrior,
+    rogue,
+    mage,
+    priest,
+    paladin
+}
+public enum PJob
+{
+    builder,
+    gatherer,
+    forester
+}

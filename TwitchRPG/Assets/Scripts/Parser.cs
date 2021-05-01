@@ -6,7 +6,9 @@ public class Parser : MonoBehaviour
 {
     public TwitchClient client;
     public Commands commands;
-    private List<string> commandList;
+    [SerializeField] private List<string> commandList = new List<string>();
+    [SerializeField] public List<string> playerClassList = new List<string>();
+    [SerializeField] public List<string> playerJobList = new List<string>();
     private void Start()
     {
         if (client == null)
@@ -14,19 +16,25 @@ public class Parser : MonoBehaviour
         if (commands == null)
             commands = FindObjectOfType<Commands>();
         
-        var temp = System.Enum.GetNames(typeof(PlayerCommands)).ToList();
+        var cmds = System.Enum.GetNames(typeof(PlayerCommands)).ToList();
         commandList = new List<string>();
-        temp.ForEach(c => commandList.Add($"!{c}"));
+        cmds.ForEach(c => commandList.Add($"!{c.ToLower()}"));
+        var pClasses = System.Enum.GetNames(typeof(PClass)).ToList();
+        pClasses.ForEach(pc => playerClassList.Add($"{pc.ToLower()}"));
+        var pJobs = System.Enum.GetNames(typeof(PJob)).ToList();
+        pJobs.ForEach(pj => playerJobList.Add($"{pj.ToLower()}"));
     }
     public void ParseMessage(TwitchLib.Client.Events.OnMessageReceivedArgs e)
     {
-        var splitMessage = e.ChatMessage.Message.Split(' ');
+        var fullMessage = e.ChatMessage.Message.ToLower();
+        var splitMessage = fullMessage.Split(' ');
         StartParsing(e.ChatMessage.Username, e.ChatMessage.DisplayName, splitMessage);
     }
 
     public void ParseMessage(TwitchLib.Client.Events.OnWhisperReceivedArgs e)
     {
-        var splitMessage = e.WhisperMessage.Message.Split(' ');
+        var fullMessage = e.WhisperMessage.Message.ToLower();
+        var splitMessage = fullMessage.Split(' ');
         StartParsing(e.WhisperMessage.Username, e.WhisperMessage.DisplayName, splitMessage, true);
     }
 
@@ -44,6 +52,7 @@ public class Parser : MonoBehaviour
 
     private void GetCorrectCommand(PlayerCommands cmd, string userName, string displayName, string[] splitMessage, bool isPrivateMessage)
     {
+        Debug.Log($"Selected command: {cmd}");
         switch (cmd)
         {
             case PlayerCommands.commands:
@@ -52,14 +61,23 @@ public class Parser : MonoBehaviour
             case PlayerCommands.create:
                 commands?.CreatePlayer(userName, displayName, isPrivateMessage);
                 break;
-            case PlayerCommands.kill:
-                commands?.KillPlayer(userName);
+            case PlayerCommands.status:
+                commands?.PrintPlayerInfo(userName);
                 break;
+            case PlayerCommands.setJob:
+                commands?.SetJob(userName, splitMessage);
+                break;
+            case PlayerCommands.setClass:
+                commands?.SetClass(userName, splitMessage);
+                break;
+            /*case PlayerCommands.kill:
+                commands?.KillPlayer(userName);
+                break;*/
             /*case PlayerCommands.move:
                 MovePlayer(userName, displayName, splitMessage);
                 break;*/
             default:
-                client.BotSendMessage(userName, $"@{displayName}, this command does not exist!", isPrivateMessage);
+                client.BotSendMessage(userName, $"@{displayName}, this command does not exist or is not yet implemented!", isPrivateMessage);
                 break;
         }
     }
