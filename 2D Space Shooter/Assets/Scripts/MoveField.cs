@@ -16,7 +16,7 @@ public class MoveField : MonoBehaviour
     [SerializeField] private float textSize = .25f;
     [SerializeField] private Vector2 playerPos;
     [SerializeField] private float waitTime = 15f;
-    public Grid<Vector3> moveableField = null;
+    public Grid<bool> moveableField = null;
     private WordManager wordManager;
 
     private TMP_Text CreateTextField(float textSize)
@@ -31,24 +31,24 @@ public class MoveField : MonoBehaviour
     {
         instance = this;
         wordManager = FindObjectOfType<WordManager>();
-        moveableField = new Grid<Vector3>(width, height, cellSize, transform.position, is2D, debug, default);
-        for (int x = 0; x < width; x++)
+        moveableField = new Grid<bool>(width, height, cellSize, transform.position, is2D, debug, default);
+        /*for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < currAllowedHeight; y++)
             {
-                /*if (CheckPlayerPos(x, y))
-                    continue;*/
-                moveableField.SetGridObject(x, y, moveableField.GetCenterOfCell2D(x, y));
-                //SpawnMovementWord(x, y);
                 if (!CheckPlayerPos(x, y))
+                {
                     wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));
+                    moveableField.SetGridObject(x, y, true);
+                }
             }
-        }
+        }*/
+        StartCoroutine(WaitForSpawnNewMovementWord());
     }
 
     private bool CheckPlayerPos(int x, int y)
     {
-        if (PlayerMovement.instance.GetMoveTarget() == moveableField.GetCenterOfCell2D(x, y))
+        if (PlayerMovement.instance.transform.position == moveableField.GetCenterOfCell2D(x, y))
         {
             playerPos.x = x;
             playerPos.y = y;
@@ -57,13 +57,16 @@ public class MoveField : MonoBehaviour
         return false;
     }
 
-    /*private IEnumerator WaitForSpawnNewMovementWord()
+    private IEnumerator WaitForSpawnNewMovementWord()
     {
-        yield return new WaitForSeconds(waitTime);
-        SpawnMovementWord();
-    }*/
+        while (GameManager.instance.playerLives >= 0)
+        {
+            SpawnMovementWord();
+            yield return new WaitForSeconds(waitTime);
+        }
+    }
 
-    private void SpawnMovementWord(int xPos, int yPos)
+    private void SpawnMovementWord()
     {
         /*var xPos = Random.Range(0, width);
         var yPos = Random.Range(0, currAllowedHeight);*/
@@ -75,18 +78,27 @@ public class MoveField : MonoBehaviour
         /*var temp = moveableField.GetGridObject(xPos, yPos);
         Debug.Log(temp);
         if (moveableField.GetGridObject(xPos, yPos) == default)*/
-            wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(xPos, yPos));
+        var x = Random.Range(0, width);
+        var y = Random.Range(0, currAllowedHeight);
+        if (!CheckPlayerPos(x, y) && moveableField.GetGridObject(x, y) == false)
+        {
+            wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));
+            moveableField.SetGridObject(x, y, true);
+        }
     }
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             var xPos = Random.Range(0, width);
             var yPos = Random.Range(0, currAllowedHeight);
-            if (!CheckPlayerPos(xPos, yPos))
+            if (!CheckPlayerPos(xPos, yPos) && moveableField.GetGridObject(xPos, yPos) == false)
+            {
                 wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(xPos, yPos));
+                moveableField.SetGridObject(xPos, yPos, true);
+            }
         }
-    }
+    }*/
 }
 
 public class GridObject

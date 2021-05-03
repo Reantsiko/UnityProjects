@@ -76,6 +76,7 @@ public class Word
     private void MovementWord()
     {
         PlayerMovement.instance.SetMoveTarget(moveTarget);
+        MoveField.instance.moveableField.SetGridObject(moveTarget, false);
         display.RemoveWord();
     }
 

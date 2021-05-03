@@ -21,6 +21,8 @@ public class WordDisplay : MonoBehaviour
 
         if (_word.wordType == WordType.Enemy)
             text.text = $"<color=red>{toSet}</color>";
+        else if (_word.wordType == WordType.Movement)
+            text.text = $"<color=orange>{toSet}</color>";
         else
             text.text = $"<color=white>{toSet}</color>";
         word = _word;
