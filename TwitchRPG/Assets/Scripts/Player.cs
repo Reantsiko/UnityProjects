@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         playerClass = new PlayerClass((PClass)Random.Range(0, classAmount));
         var jobAmount = System.Enum.GetValues(typeof(PJob)).Length;
         playerJob = new PlayerJob((PJob)Random.Range(0, jobAmount));
-        StartCoroutine(GainXP());
+        //StartCoroutine(GainXP());
     }
 
     private IEnumerator GainXP()

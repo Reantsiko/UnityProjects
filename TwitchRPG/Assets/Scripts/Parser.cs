@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections;
+using System;
 
 public class Parser : MonoBehaviour
 {
@@ -76,10 +78,44 @@ public class Parser : MonoBehaviour
             /*case PlayerCommands.move:
                 MovePlayer(userName, displayName, splitMessage);
                 break;*/
+            case PlayerCommands.repeat:
+                StartRepeatObjective(userName, splitMessage);
+                break;
             default:
                 client.BotSendMessage(userName, $"@{displayName}, this command does not exist or is not yet implemented!", isPrivateMessage);
                 break;
         }
+    }
+
+    private void StartRepeatObjective(string userName, string[] splitMessage)
+    {
+        if (splitMessage.Length >= 2)
+        {
+            var method = GetJobMethod(splitMessage[1]);
+            if (method != null)
+            {
+                Debug.Log(method);
+                var cor = StartCoroutine(method);
+            }
+        }
+    }
+
+    private string GetJobMethod(string msg)
+    {
+        if (string.Compare(msg, "job") == 0)
+        {
+            var startPos = MethodTester().ToString().IndexOf('<');
+            var endPos = MethodTester().ToString().IndexOf('>');
+            return $"{MethodTester().ToString().Substring(startPos + 1, endPos - startPos - 1)}";
+        }
+        return null;
+    }
+
+    private IEnumerator MethodTester()
+    {
+        Debug.Log($"Starting job!");
+        yield return new WaitForSeconds(5f);
+        Debug.Log($"Finished job!");
     }
 
     private void MovePlayer(string userName, string displayName, string[] splitMessage)

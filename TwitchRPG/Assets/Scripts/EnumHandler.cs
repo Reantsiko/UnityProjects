@@ -4,7 +4,8 @@
     create,
     setClass,
     setJob,
-    status
+    status,
+    repeat
 }
 
 public enum PClass
