@@ -162,6 +162,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 1858943239}
   moveSpeed: 10
+  debug: 1
+  wall: {fileID: 2910909532321422351, guid: 32586d17927bcfb4091aad1e82fbaa53, type: 3}
+  path: {fileID: 1196751268328999317, guid: ddff208147efff34faf5fe035f20e4b0, type: 3}
+  selected: {fileID: 0}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -274,7 +278,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

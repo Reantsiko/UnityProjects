@@ -2,16 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Placeable { wall, path}
+
+
 public class PathFindingTest : MonoBehaviour
 {
-    private Pathfinding pathfinding;
+    public static PathFindingTest instance;
+    public Pathfinding pathfinding;
     public Transform unit;
     public float moveSpeed = 10f;
+    public bool debug = true;
     Coroutine coroutine;
+    public GameObject wall = null;
+    public GameObject path = null;
+    public GameObject selected = null;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        pathfinding = new Pathfinding(10, 10);
+        pathfinding = new Pathfinding(10, 10, debug);
     }
 
     // Update is called once per frame
@@ -36,7 +49,23 @@ public class PathFindingTest : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            pathfinding.GetGrid().GetGridObject(mouseWorldPosition).isWalkable = !pathfinding.GetGrid().GetGridObject(mouseWorldPosition).isWalkable;
+            /*pathfinding.GetGrid().GetGridObject(mouseWorldPosition).isWalkable = !*///pathfinding.GetGrid().GetGridObject(mouseWorldPosition).modifier = 6;
+            pathfinding.GetGrid().GetXY(mouseWorldPosition, out int x, out int y);
+            var location = pathfinding.GetGrid().GetCenterCell(x, y);
+            if (selected != null)
+            {
+                var instance = Instantiate(selected, location, Quaternion.identity);
+                pathfinding.GetGrid().GetGridObject(location).ChangePlacedObject(instance, out GameObject toRemove);
+                if (toRemove != null)
+                    Destroy(toRemove);
+                
+            }
+            Debug.Log(location);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (wall == null || path == null) return;
+            selected = selected == wall ? path : wall;
         }
 
         transform.Translate(Vector3.right * Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime);

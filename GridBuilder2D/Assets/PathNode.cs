@@ -12,13 +12,25 @@ public class PathNode
     public int hCost;
     public int fCost;
     public bool isWalkable;
+    public int modifier;
     public PathNode previousNode;
-    public PathNode(Grid<PathNode> _grid, int _x, int _y)
+    public GameObject placedObject;
+    public PathNode(Grid<PathNode> _grid, int _x, int _y, int _modifier)
     {
         grid = _grid;
         x = _x;
         y = _y;
+        modifier = _modifier;
         isWalkable = true;
     }
-    public void CalculateFCost()=> fCost = gCost + hCost;
+
+    public void ChangePlacedObject(GameObject newObject, out GameObject toRemove)
+    {
+        toRemove = null;
+        if (placedObject != null)
+            toRemove = placedObject;
+        placedObject = newObject;
+    }
+
+    public void CalculateFCost() => fCost = gCost + hCost - modifier;
 }
