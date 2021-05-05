@@ -6,7 +6,8 @@ public class PathNode
 {
     private GridBuilder<PathNode> grid;
     public int x;
-    public int y;
+    public float y;
+    public int z;
 
     public int gCost;
     public int hCost;
@@ -15,11 +16,11 @@ public class PathNode
     public int modifier;
     public PathNode previousNode;
     public GameObject placedObject;
-    public PathNode(GridBuilder<PathNode> _grid, int _x, int _y, int _modifier)
+    public PathNode(GridBuilder<PathNode> _grid, int _x, int _z, int _modifier)
     {
         grid = _grid;
         x = _x;
-        y = _y;
+        z = _z;
         modifier = _modifier;
         isWalkable = true;
     }

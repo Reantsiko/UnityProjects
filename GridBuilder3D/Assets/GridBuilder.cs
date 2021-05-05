@@ -28,8 +28,10 @@ public class GridBuilder<TGridObject> {
 
         gridArray = new TGridObject[width, depth];
 
-        for (int x = 0; x < gridArray.GetLength(0); x++) {
-            for (int z = 0; z < gridArray.GetLength(1); z++) {
+        for (int x = 0; x < gridArray.GetLength(0); x++)
+        {
+            for (int z = 0; z < gridArray.GetLength(1); z++)
+            {
                 gridArray[x, z] = createGridObject(this, x, z);
             }
         }
@@ -55,7 +57,7 @@ public class GridBuilder<TGridObject> {
     public int GetWidth() => width;
     public int GetDepth() => depth;
     public float GetCellSize() => cellSize;
-    public Vector3 GetWorldPosition(int x, int z) => new Vector3(x, 0f, z) * cellSize + originPosition;
+    public Vector3 GetWorldPosition(int x, int z) => new Vector3(x, 4f, z) * cellSize + originPosition;
     public Vector3 GetCenterCell(int x, int z) => GetWorldPosition(x, z) + Vector3.one * (cellSize / 2);
     public void GetXZ(Vector3 worldPosition, out int x, out int z) 
     {
