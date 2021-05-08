@@ -17,18 +17,18 @@ MonoBehaviour:
     normalizeMode: 1
     scale: 100
     octaves: 7
-    persistance: 0.4
-    lacunarity: 1.65
-    seed: 250
+    persistance: 0.34
+    lacunarity: 2
+    seed: 289
     offSet: {x: 15, y: 0}
   useFallOff: 0
-  heightMultiplier: 50
+  heightMultiplier: 200
   heightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: -0.0018310547
       inSlope: 2.6091413
       outSlope: 2.6091413
       tangentMode: 0
@@ -36,17 +36,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.4364543
     - serializedVersion: 3
-      time: 0.005579374
-      value: 0.025868138
-      inSlope: 0.24318354
-      outSlope: 0.24318354
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.3375492
-    - serializedVersion: 3
-      time: 0.18797255
-      value: 0.13907075
+      time: 0.032655846
+      value: 0.20495571
       inSlope: -0.062468365
       outSlope: -0.062468365
       tangentMode: 0
@@ -54,8 +45,8 @@ MonoBehaviour:
       inWeight: 0.09453063
       outWeight: 0.0816425
     - serializedVersion: 3
-      time: 0.7651987
-      value: 0.14076245
+      time: 0.7563429
+      value: 0.21030769
       inSlope: -0.04563145
       outSlope: -0.04563145
       tangentMode: 0
@@ -63,8 +54,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.5130568
     - serializedVersion: 3
-      time: 0.845256
-      value: 0.49178198
+      time: 0.81119525
+      value: 0.49544224
       inSlope: 2.6476111
       outSlope: 2.6476111
       tangentMode: 0
@@ -72,8 +63,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.64201736
     - serializedVersion: 3
-      time: 0.90117025
-      value: 0.65059954
+      time: 0.86710954
+      value: 0.6542598
       inSlope: 3.2515817
       outSlope: 3.2515817
       tangentMode: 0

@@ -9,17 +9,11 @@ public class MapPreview : MonoBehaviour
     public TextureData textureData;
     public enum DrawMode { NoiseMap, DrawMesh, FallOffMap }
     public DrawMode drawMode;
-    //public const int mapChunkSize = 95;
     public Material terrainMaterial;
-
-
     [Range(0, MeshSettings.numSupportedLODs - 1)]
     public int levelofDetailEditor;
-
     public int seed;
-
     public bool autoUpdate;
-
     float[,] fallOffMap;
     public Renderer textureRenderer;
     public MeshFilter meshFilter;
@@ -40,14 +34,16 @@ public class MapPreview : MonoBehaviour
         meshFilter.gameObject.SetActive(true);
     }
 
-
-
-
     public void DrawMapInEditor()
     {
         textureData.ApplyToMaterial(terrainMaterial);
         textureData.UpdateMeshHeights(terrainMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
         HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero);
+        DrawMap(heightMap);
+    }
+
+    private void DrawMap(HeightMap heightMap)
+    {
         if (drawMode == DrawMode.NoiseMap)
             DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
         else if (drawMode == DrawMode.DrawMesh)
@@ -55,18 +51,15 @@ public class MapPreview : MonoBehaviour
         else if (drawMode == DrawMode.FallOffMap)
             DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FallOffGenerator.GenerateFallOffMap(meshSettings.numVertsPerLine), 0, 1)));
     }
-    void OnValuesUpdated()
+
+    private void OnValuesUpdated()
     {
         if (!Application.isPlaying)
-        {
             DrawMapInEditor();
-        }
     }
 
-    void OnTextureValuesUpdated()
-    {
-        textureData.ApplyToMaterial(terrainMaterial);
-    }
+    private void OnTextureValuesUpdated() => textureData.ApplyToMaterial(terrainMaterial);
+
     private void OnValidate()
     {
         if (meshSettings != null)

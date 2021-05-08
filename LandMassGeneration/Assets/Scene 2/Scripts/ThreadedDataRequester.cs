@@ -20,10 +20,7 @@ public class ThreadedDataRequester : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        instance = this;
-    }
+    private void Awake() => instance = this;
 
     public static void RequestData(Func<object>generateData, Action<object> callback)
     {
@@ -34,9 +31,7 @@ public class ThreadedDataRequester : MonoBehaviour
     {
         object data = generateData();
         lock (dataQueue)
-        {
             dataQueue.Enqueue(new ThreadInfo(callback, data));
-        }
     }
 
     private void Update()

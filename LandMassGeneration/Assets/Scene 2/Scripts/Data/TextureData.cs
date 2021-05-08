@@ -28,9 +28,7 @@ public class TextureData : UpdateableData
     {
         Texture2DArray textureArray = new Texture2DArray(textureSize, textureSize, textures.Length, textureFormat, true);
         for (int i = 0; i < textures.Length; i++)
-        {
             textureArray.SetPixels(textures[i].GetPixels(), i);
-        }
         textureArray.Apply();
         return textureArray;
     }
@@ -42,6 +40,7 @@ public class TextureData : UpdateableData
         material.SetFloat("minHeight", minHeight);
         material.SetFloat("maxHeight", maxHeight);
     }
+
     [System.Serializable]
     public class Layer
     {

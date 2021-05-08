@@ -19,15 +19,14 @@ public static class TextureGenerator
         if (heightMap.values == null) return default;
         int width = heightMap.values.GetLength(0);
         int height = heightMap.values.GetLength(1);
-
         Color[] colourMap = new Color[width * height];
+
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
-            {
                 colourMap[y * width + x] = Color.Lerp(Color.black, Color.white, Mathf.InverseLerp(heightMap.minValue, heightMap.maxValue, heightMap.values[x, y]));
-            }
         }
+
         return TextureFromColourMap(colourMap, width, height);
     }
 }
