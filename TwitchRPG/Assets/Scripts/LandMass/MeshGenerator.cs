@@ -1,0 +1,101 @@
+﻿using UnityEngine;
+
+public static class MeshGenerator
+{
+
+    public static MeshData GenerateTerrainMesh(float[,] heightMap, MeshSettings meshSettings, int levelOfDetail)
+    {
+        int skipIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2;
+        int numVertsPerLine = meshSettings.numVertsPerLine;
+        
+        var vertexIndicesMap = CalculateIndices(numVertsPerLine, skipIncrement);
+        var meshData = CreateMeshData(numVertsPerLine, skipIncrement, vertexIndicesMap, meshSettings, heightMap);
+        meshData.ProcessMesh();
+
+        return meshData;
+    }
+
+    private static int[,] CalculateIndices(int numVertsPerLine, int skipIncrement)
+    {
+        int[,] vertexIndicesMap = new int[numVertsPerLine, numVertsPerLine];
+        int meshVertexIndex = 0;
+        int outOfMeshVertexIndex = -1;
+        for (int y = 0; y < numVertsPerLine; y++)
+        {
+            for (int x = 0; x < numVertsPerLine; x++)
+            {
+                if (y == 0 || y == numVertsPerLine - 1 || x == 0 || x == numVertsPerLine - 1)
+                {
+                    vertexIndicesMap[x, y] = outOfMeshVertexIndex;
+                    outOfMeshVertexIndex--;
+                }
+                else if (!(x > 2 && x < numVertsPerLine - 3 && y > 2 && y < numVertsPerLine - 3 && ((x - 2) % skipIncrement != 0 || (y - 2) % skipIncrement != 0)))
+                {
+                    vertexIndicesMap[x, y] = meshVertexIndex;
+                    meshVertexIndex++;
+                }
+            }
+        }
+        return vertexIndicesMap;
+    }
+
+    private static MeshData CreateMeshData(int numVertsPerLine, int skipIncrement, int[,] vertexIndicesMap, MeshSettings meshSettings, float[,] heightMap)
+    {
+        MeshData meshData = new MeshData(numVertsPerLine, skipIncrement, meshSettings.useFlatShading);
+        Vector2 topLeft = new Vector2(-1, 1) * meshSettings.meshWorldSize / 2f;
+        for (int y = 0; y < numVertsPerLine; y++)
+        {
+            for (int x = 0; x < numVertsPerLine; x++)
+            {
+                bool isSkippedVertex = x > 2 && x < numVertsPerLine - 3 && y > 2 && y < numVertsPerLine - 3 && ((x - 2) % skipIncrement != 0 || (y - 2) % skipIncrement != 0);
+                if (!isSkippedVertex)
+                {
+                    CreateBoolValues(x, y, numVertsPerLine, skipIncrement, out bool isMainVertex, out bool isEdgeConnectionVertex);
+                    int vertexIndex = vertexIndicesMap[x, y];
+                    Vector2 percent = new Vector2(x - 1, y - 1) / (numVertsPerLine - 3);
+                    Vector2 vertexPosition2D = topLeft + new Vector2(percent.x, -percent.y) * meshSettings.meshWorldSize;
+                    float height = heightMap[x, y];
+
+                    if (isEdgeConnectionVertex)
+                        height = CalculateHeightEdgeConnectionVertex(x, y, numVertsPerLine, skipIncrement, heightMap);
+
+                    meshData.AddVertex(new Vector3(vertexPosition2D.x, height, vertexPosition2D.y), percent, vertexIndex);
+                    if (x < numVertsPerLine - 1 && y < numVertsPerLine - 1 && (!isEdgeConnectionVertex || (x != 2 && y != 2)))
+                        CreateTriangle(x, y, numVertsPerLine, skipIncrement, isMainVertex, vertexIndicesMap, ref meshData);
+                }
+            }
+        }
+        return meshData;
+    }
+
+    private static void CreateBoolValues(int x, int y, int numVertsPerLine, int skipIncrement, out bool isMainVertex, out bool isEdgeConnectionVertex)
+    {
+        bool isOutOfMeshVertex = y == 0 || y == numVertsPerLine - 1 || x == 0 || x == numVertsPerLine - 1;
+        bool isMeshEdgeVertex = (y == 1 || y == numVertsPerLine - 2 || x == 1 || x == numVertsPerLine - 2) && !isOutOfMeshVertex;
+        isMainVertex = (x - 2) % skipIncrement == 0 && (y - 2) % skipIncrement == 0 && !isOutOfMeshVertex && !isMeshEdgeVertex;
+        isEdgeConnectionVertex = (y == 2 || y == numVertsPerLine - 3 || x == 2 || x == numVertsPerLine - 3) && !isOutOfMeshVertex && !isMeshEdgeVertex && !isMainVertex;
+    }
+
+    private static float CalculateHeightEdgeConnectionVertex(int x, int y, int numVertsPerLine, int skipIncrement, float[,] heightMap)
+    {
+        bool isVertical = x == 2 || x == numVertsPerLine - 3;
+        int dstToMainVertexA = (isVertical ? (y - 2) : (x - 2)) % skipIncrement;
+        int dstToMainVertexB = skipIncrement - dstToMainVertexA;
+        float dstPercentFromAToB = dstToMainVertexA / (float)skipIncrement;
+        float heightOfMainVertexA = heightMap[(isVertical) ? x : x - dstToMainVertexA, (isVertical) ? y - dstToMainVertexA : y];
+        float heightOfMainVertexB = heightMap[(isVertical) ? x : x + dstToMainVertexB, (isVertical) ? y + dstToMainVertexB : y];
+        return heightOfMainVertexA * (1 - dstPercentFromAToB) + heightOfMainVertexB * dstPercentFromAToB;
+    }
+
+    private static void CreateTriangle(int x, int y, int numVertsPerLine, int skipIncrement, bool isMainVertex, int[,] vertexIndicesMap, ref MeshData meshData)
+    {
+        int currentIncrement = (isMainVertex && x != numVertsPerLine - 3 && y != numVertsPerLine - 3) ? skipIncrement : 1;
+        int a = vertexIndicesMap[x, y];
+        int b = vertexIndicesMap[x + currentIncrement, y];
+        int c = vertexIndicesMap[x, y + currentIncrement];
+        int d = vertexIndicesMap[x + currentIncrement, y + currentIncrement];
+        meshData.AddTriangle(a, d, c);
+        meshData.AddTriangle(d, a, b);
+    }
+}
+
