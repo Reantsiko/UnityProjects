@@ -18,6 +18,7 @@ public enum PClass
 }
 public enum PJob
 {
+    explorer,
     builder,
     gatherer,
     forester

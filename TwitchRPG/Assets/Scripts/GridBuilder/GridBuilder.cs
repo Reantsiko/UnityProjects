@@ -19,6 +19,12 @@ public class GridBuilder<TGridObject> {
     private TGridObject[,] gridArray;
     private bool debug;
 
+    public TGridObject[,] GetGridArray() => gridArray;
+    public TGridObject FindUnexplored()
+    {
+        
+        return gridArray[23,24];
+    }
     public GridBuilder(int _width, int _depth, float _cellSize, Vector3 _originPosition, bool _debug, Func<GridBuilder<TGridObject>, int, int, TGridObject> createGridObject) {
         width = _width;
         depth = _depth;

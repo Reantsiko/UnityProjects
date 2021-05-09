@@ -6,6 +6,7 @@ public class Commands : MonoBehaviour
 {
     public TwitchClient client;
     public Parser parser;
+    public Transform spawnPosition;
     [SerializeField] private GameObject capsulePrefab = null;
 
     private void Start()
@@ -29,7 +30,7 @@ public class Commands : MonoBehaviour
     {
         if (capsulePrefab != null)
         {
-            var instance = Instantiate(capsulePrefab, new Vector3(Random.Range(-5f, 5f), 1f, Random.Range(-7f, 23f)), Quaternion.identity) as GameObject;
+            var instance = Instantiate(capsulePrefab, spawnPosition.position, Quaternion.identity) as GameObject;
             var p = instance.GetComponent<Player>();
             p.userName = userName;
             p.displayName = displayName;

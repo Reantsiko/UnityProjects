@@ -16,7 +16,7 @@ public class TwitchClient : MonoBehaviour
             parser = FindObjectOfType<Parser>();
     }
 
-    void Start()
+    public void StartClient()
     {
         Application.runInBackground = true;   
         ConnectionCredentials credentials = new ConnectionCredentials("twitchsurvivalrpg", Secrets.bot_access_token);

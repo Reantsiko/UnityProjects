@@ -7,7 +7,7 @@ public class Pathfinding
 {
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
-
+    private List<PathNode> unreachable = new List<PathNode>();
     private GridBuilder<PathNode> grid;
     public Pathfinding(int width, int height, Vector3 origin,bool debug)
     {
@@ -28,6 +28,19 @@ public class Pathfinding
         return CalculatePath(endNode, openList, closedList);        
     }
 
+    public void AddNodeToUnreachable(PathNode toAdd)
+    {
+        Debug.Log($"Adding node to unreachable!");
+        toAdd.unreachable = true;
+        unreachable.Add(toAdd);
+    }
+    public void ResetUnreachable()
+    {
+        Debug.Log($"Reseting unreachable list!");
+        unreachable.ForEach(x => x.unreachable = false);
+        unreachable.Clear();
+    }
+
     private List<PathNode> CalculatePath(PathNode endNode, List<PathNode> openList, List<PathNode> closedList)
     {
         while (openList.Count > 0)
@@ -40,6 +53,7 @@ public class Pathfinding
 
             CheckNeighbours(currentNode, endNode, ref openList, ref closedList);
         }
+        AddNodeToUnreachable(endNode);
         return null;
     }
 
@@ -62,6 +76,7 @@ public class Pathfinding
 
     private void CheckNeighbours(PathNode currentNode, PathNode endNode, ref List<PathNode> openList, ref List<PathNode> closedList)
     {
+        if (currentNode == null || endNode == null) return;
         foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
         {
             if (closedList.Contains(neighbourNode))
@@ -89,8 +104,16 @@ public class Pathfinding
         }
     }
 
+    public List<PathNode> GetNeighbours(PathNode currentNode)
+    {
+        return GetNeighbourList(currentNode);
+    }
+
     private List<PathNode> GetNeighbourList(PathNode currentNode)
     {
+        if (currentNode == null) return default;
+        //Debug.Log("Getting neighbour list");
+        //Debug.Log($"Current node position is x: {currentNode?.x}, z: {currentNode?.z}");
         List<PathNode> neighbourList = new List<PathNode>();
         if (currentNode.x - 1 >= 0)
         {
@@ -116,13 +139,40 @@ public class Pathfinding
         return neighbourList;
     }
 
+    public PathNode FindInRadius(PathNode currentNode, int distance)
+    {
+        if (currentNode.x - distance >= 0)
+        {
+            if (GetNode(currentNode.x - distance, currentNode.z).GetIsUnexploredAndReachable())
+                return GetNode(currentNode.x - distance, currentNode.z);
+            if (currentNode.z - distance >= 0 && GetNode(currentNode.x - distance, currentNode.z - distance).GetIsUnexploredAndReachable())
+                return GetNode(currentNode.x - distance, currentNode.z - distance);
+            if (currentNode.z + distance < grid.GetDepth() && GetNode(currentNode.x - distance, currentNode.z + distance).GetIsUnexploredAndReachable())
+                return GetNode(currentNode.x - distance, currentNode.z + distance);
+        }
+        if (currentNode.x + distance < grid.GetWidth())
+        {
+            if (GetNode(currentNode.x + distance, currentNode.z).GetIsUnexploredAndReachable())
+                return GetNode(currentNode.x + distance, currentNode.z);
+            if (currentNode.z - distance >= 0 && GetNode(currentNode.x + distance, currentNode.z - distance).GetIsUnexploredAndReachable())
+                return GetNode(currentNode.x + distance, currentNode.z - distance);
+            if (currentNode.z + 1 < grid.GetDepth() && GetNode(currentNode.x + distance, currentNode.z + distance).GetIsUnexploredAndReachable())
+                return GetNode(currentNode.x + distance, currentNode.z + distance);
+        }
+        if (currentNode.z - distance >= 0 && GetNode(currentNode.x, currentNode.z - distance).GetIsUnexploredAndReachable())
+            return GetNode(currentNode.x, currentNode.z - 1);
+        if (currentNode.z + distance < grid.GetDepth() && GetNode(currentNode.x, currentNode.z + distance).GetIsUnexploredAndReachable())
+            return GetNode(currentNode.x, currentNode.z + distance);
+        return default;
+    }
+
     private PathNode GetNode(int x, int z) => grid.GetGridObject(x, z);
 
     private List<PathNode> CreatePath(PathNode endNode)
     {
         var currentNode = endNode;
         List<PathNode> path = new List<PathNode>();
-        while (currentNode.previousNode != null)
+        while (currentNode?.previousNode != null)
         {
             path.Add(currentNode);
             currentNode = currentNode.previousNode;

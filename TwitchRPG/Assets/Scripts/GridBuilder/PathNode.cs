@@ -14,6 +14,8 @@ public class PathNode
     public int fCost;
     public bool isWalkable;
     public bool isWater;
+    public bool unreachable;
+    public bool isExplored;
     public int modifier;
     public PathNode previousNode;
     public GameObject placedObject;
@@ -35,4 +37,6 @@ public class PathNode
     }
 
     public void CalculateFCost() => fCost = gCost + hCost - modifier;
+    public void SetIsExplored() => isExplored = true;
+    public bool GetIsUnexploredAndReachable() => (!isExplored && !unreachable);
 }

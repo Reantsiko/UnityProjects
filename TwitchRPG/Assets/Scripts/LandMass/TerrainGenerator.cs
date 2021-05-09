@@ -32,7 +32,7 @@ public class TerrainGenerator : MonoBehaviour
         meshWorldSize = meshSettings.meshWorldSize;
         chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / meshWorldSize);
         UpdateVisibleChunks();
-        Invoke("StartGrid", 5f);
+        Invoke("StartGrid", 3f);
         
     }
 
