@@ -11,7 +11,7 @@ public class Pathfinding
     private GridBuilder<PathNode> grid;
     public Pathfinding(int width, int height, Vector3 origin,bool debug)
     {
-        grid = new GridBuilder<PathNode>(width, height, 4f, origin, debug, (GridBuilder<PathNode> g, int x, int z) => new PathNode(g, x, z, 0));
+        grid = new GridBuilder<PathNode>(width, height, 4f, origin, debug, (GridBuilder<PathNode> g, int x, int z) => new PathNode(/*g,*/ x, z, 0));
     }
     public GridBuilder<PathNode> GetGrid() => grid;
 
@@ -66,7 +66,11 @@ public class Pathfinding
         {
             if (closedList.Contains(neighbourNode))
                 continue;
-            if (!neighbourNode.isWalkable)
+            /*if (!neighbourNode.isWalkable && neighbourNode.isWater && player has boat)
+            {
+
+            }
+            else*/ if (!neighbourNode.isWalkable)
             {
                 closedList.Add(neighbourNode);
                 continue;

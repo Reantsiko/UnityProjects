@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PathNode
 {
-    private GridBuilder<PathNode> grid;
+    //private GridBuilder<PathNode> grid;
     public int x;
     public float y;
     public int z;
@@ -13,12 +13,13 @@ public class PathNode
     public int hCost;
     public int fCost;
     public bool isWalkable;
+    public bool isWater;
     public int modifier;
     public PathNode previousNode;
     public GameObject placedObject;
-    public PathNode(GridBuilder<PathNode> _grid, int _x, int _z, int _modifier)
+    public PathNode(/*GridBuilder<PathNode> _grid, */int _x, int _z, int _modifier)
     {
-        grid = _grid;
+        //grid = _grid;
         x = _x;
         z = _z;
         modifier = _modifier;
