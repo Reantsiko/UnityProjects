@@ -169,3 +169,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: {fileID: 1038866722133092977}
+  building:
+    hitPoints: 1000
+    armor: 50
+    isUnderAttack: 0
+    width: 0
+    depth: 0
+    cellSize: 0

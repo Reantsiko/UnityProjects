@@ -16,7 +16,7 @@ public class Commands : MonoBehaviour
     }
     public void CreatePlayer(string userName, string displayName, bool isPrivateMessage)
     {
-        if (!CheckIfPlayerExists(userName, true))
+        if (!CheckPlayerAndMessageLength(userName, 0, 0, true))
         {
             if (SpawnPlayer(userName, displayName) == true)
                 client.BotSendMessage(userName, $"{displayName} has joined the game!", isPrivateMessage);
@@ -46,7 +46,7 @@ public class Commands : MonoBehaviour
 
     public void KillPlayer(string userName)
     {
-        if (!CheckIfPlayerExists(userName)) return;
+        if (!CheckPlayerAndMessageLength(userName, 0, 0)) return;
 
         var temp = GamePlayers.instance.createdPlayers[userName];
         GamePlayers.instance.createdPlayers.Remove(userName);
@@ -56,7 +56,7 @@ public class Commands : MonoBehaviour
 
     public void PrintPlayerInfo(string userName)
     {
-        if (!CheckIfPlayerExists(userName)) return;
+        if (!CheckPlayerAndMessageLength(userName, 0, 0)) return;
 
         var selectedPlayer = GamePlayers.instance.createdPlayers[userName];
         client.BotSendMessage(userName, $"{selectedPlayer.displayName} your active class is {selectedPlayer.playerClass.activeClass} " +
@@ -67,44 +67,57 @@ public class Commands : MonoBehaviour
 
     public void SetJob(string userName, string[] splitMessage)
     {
-        if (!CheckIfPlayerExists(userName)) return;
-
-        if (splitMessage.Length > 1)
+        if (!CheckPlayerAndMessageLength(userName, splitMessage.Length, 2)) return;
+        var player = GamePlayers.instance.createdPlayers[userName];
+        if (GamePlayers.instance.createdPlayers[userName].playerJob.activeJob != PJob.none)
         {
-            var player = GamePlayers.instance.createdPlayers[userName];
-            var toFind = splitMessage[1];
-            var jobValue = parser.playerJobList.IndexOf(toFind);
-            if (jobValue == -1)
-            {
-                client.BotSendMessage(userName, $"{player.displayName} the inputted job does not exist!", false);
-                return;
-            }
-            player.playerJob.ChangePlayerJob((PJob)jobValue);
-        }       
+            client.BotSendMessage(userName, $"{player.displayName} you already have a job!", false);
+            return;
+        }
+
+        var jobValue = parser.playerJobList.IndexOf(splitMessage[1]);
+        if (jobValue == -1)
+        {
+            client.BotSendMessage(userName, $"{player.displayName} the inputted job does not exist!", false);
+            return;
+        }
+        player.playerJob.SetPlayerJob((PJob)jobValue);  
     }
     public void SetClass(string userName, string[] splitMessage)
     {
-        if (!CheckIfPlayerExists(userName)) return;
+        if (!CheckPlayerAndMessageLength(userName, splitMessage.Length, 2)) return;
 
-        if (splitMessage.Length > 1)
+        var player = GamePlayers.instance.createdPlayers[userName];
+        var classValue = parser.playerClassList.IndexOf(splitMessage[1]);
+        if (classValue == -1)
         {
-            var player = GamePlayers.instance.createdPlayers[userName];
-            var toFind = splitMessage[1];
-            var classValue = parser.playerClassList.IndexOf(toFind);
-            if (classValue == -1)
-            {
-                client.BotSendMessage(userName, $"{player.displayName} the inputted class does not exist!", false);
-                return;
-            }
-            player.playerClass.ChangePlayerClass ((PClass)classValue);
+            client.BotSendMessage(userName, $"{player.displayName} the inputted class does not exist!", false);
+            return;
         }
+        player.playerClass.ChangePlayerClass ((PClass)classValue);
     }
 
-    private bool CheckIfPlayerExists(string userName, bool isNew = false)
+    public void SetAction(string userName, string[] splitMessage)
+    {
+        if (!CheckPlayerAndMessageLength(userName, splitMessage.Length, 2)) return;
+
+        var index = parser.playerActions.IndexOf(splitMessage[1]);
+        if (index < 0) return;
+        var player = GamePlayers.instance.createdPlayers[userName];
+        if ((ActiveAction)index == ActiveAction.work && player.playerJob.activeJob == PJob.none)
+            client.BotSendMessage(userName, $"{userName}, you have no job, set a job if you want to use this action!", false);
+        else
+            player.activeAction = (ActiveAction)index;
+    }
+
+    private bool CheckPlayerAndMessageLength(string userName, int messageAmount, int messageAmountNeeded, bool isNew = false)
     {
         var exists = GamePlayers.instance.createdPlayers.ContainsKey(userName);
+        var messageAm = messageAmount >= messageAmountNeeded;
         if (!isNew && !exists)
             client.BotSendMessage(userName, $"{userName}, you don't have an active character!", false);
-        return exists;
+        if (!messageAm)
+            client.BotSendMessage(userName, $"{userName}, I need more information for your command!", false);
+        return exists && messageAm;
     }
 }

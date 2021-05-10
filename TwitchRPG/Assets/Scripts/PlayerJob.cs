@@ -41,7 +41,7 @@ public class PlayerJob
         Debug.Log($"Active Class: {activeJob}, Level: {playerJob[activeJob].level}, Current Experience: {playerJob[activeJob].experience}, Experience till level: {experienceForNextLevel - playerJob[activeJob].experience}");
     }
 
-    public void ChangePlayerJob(PJob toSet)
+    public void SetPlayerJob(PJob toSet)
     {
         activeJob = toSet;
         CalculateExperienceForLevel();

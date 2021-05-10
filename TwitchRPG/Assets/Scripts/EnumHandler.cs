@@ -5,21 +5,29 @@
     setClass,
     setJob,
     status,
-    repeat
+    setAction
 }
 
 public enum PClass
 {
-    warrior,
+    warrior/*,
     rogue,
     mage,
     priest,
-    paladin
+    paladin*/
 }
 public enum PJob
 {
-    explorer,
+    none,
+    explorer/*,
     builder,
     gatherer,
-    forester
+    forester*/
+}
+
+public enum ActiveAction
+{
+    idle,
+    work,
+    fight
 }

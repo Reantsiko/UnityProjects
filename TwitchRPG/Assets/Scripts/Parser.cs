@@ -8,24 +8,31 @@ public class Parser : MonoBehaviour
 {
     public TwitchClient client;
     public Commands commands;
-    [SerializeField] private List<string> commandList = new List<string>();
-    [SerializeField] public List<string> playerClassList = new List<string>();
-    [SerializeField] public List<string> playerJobList = new List<string>();
+    [SerializeField] private List<string> commandList;
+    [SerializeField] public List<string> playerClassList;
+    [SerializeField] public List<string> playerJobList;
+    [SerializeField] public List<string> playerActions;
     private void Start()
     {
         if (client == null)
             client = FindObjectOfType<TwitchClient>();
         if (commands == null)
             commands = FindObjectOfType<Commands>();
-        
-        var cmds = System.Enum.GetNames(typeof(PlayerCommands)).ToList();
-        commandList = new List<string>();
-        cmds.ForEach(c => commandList.Add($"!{c.ToLower()}"));
-        var pClasses = System.Enum.GetNames(typeof(PClass)).ToList();
-        pClasses.ForEach(pc => playerClassList.Add($"{pc.ToLower()}"));
-        var pJobs = System.Enum.GetNames(typeof(PJob)).ToList();
-        pJobs.ForEach(pj => playerJobList.Add($"{pj.ToLower()}"));
+
+        commandList = CreateList<PlayerCommands>('!');//new List<string>();
+        playerClassList = CreateList<PClass>();
+        playerJobList = CreateList<PJob>();
+        playerActions = CreateList<ActiveAction>();
     }
+
+    private List<string> CreateList<TEnum>(char c = char.MinValue)
+    {
+        List<string> created = new List<string>();
+        var listToUse = Enum.GetNames(typeof(TEnum)).ToList();
+        listToUse.ForEach(x => created.Add($"{(c != char.MinValue ? c : ' ')}{x.ToLower()}".TrimStart(' ')));
+        return created;
+    }
+
     public void ParseMessage(TwitchLib.Client.Events.OnMessageReceivedArgs e)
     {
         var fullMessage = e.ChatMessage.Message.ToLower();
@@ -72,15 +79,18 @@ public class Parser : MonoBehaviour
             case PlayerCommands.setClass:
                 commands?.SetClass(userName, splitMessage);
                 break;
+            case PlayerCommands.setAction:
+                commands?.SetAction(userName, splitMessage);
+                break;
             /*case PlayerCommands.kill:
                 commands?.KillPlayer(userName);
                 break;*/
             /*case PlayerCommands.move:
                 MovePlayer(userName, displayName, splitMessage);
                 break;*/
-            case PlayerCommands.repeat:
+            /*case PlayerCommands.repeat:
                 StartRepeatObjective(userName, splitMessage);
-                break;
+                break;*/
             default:
                 client.BotSendMessage(userName, $"@{displayName}, this command does not exist or is not yet implemented!", isPrivateMessage);
                 break;

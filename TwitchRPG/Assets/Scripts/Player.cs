@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public TMP_Text playerNameText = null;
     public float lastCommandTime;
     public bool isOnline = true;
+    public ActiveAction activeAction = ActiveAction.idle;
     public PlayerStats playerStats = null;
     public PlayerClass playerClass = null;
     public PlayerJob playerJob = null;
@@ -28,8 +29,7 @@ public class Player : MonoBehaviour
         playerStats = new PlayerStats(1, 5, 2, 10, 2, 2);
         var classAmount = System.Enum.GetValues(typeof(PClass)).Length;
         playerClass = new PlayerClass((PClass)Random.Range(0, classAmount));
-        var jobAmount = System.Enum.GetValues(typeof(PJob)).Length;
-        playerJob = new PlayerJob((PJob)Random.Range(0, jobAmount));
+        playerJob = new PlayerJob(PJob.none);
         //StartCoroutine(GainXP());
     }
 

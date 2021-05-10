@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class UnitPathfinder : MonoBehaviour
+public class Pathfinder : MonoBehaviour
 {
-    public PJob job = PJob.explorer;
+    //public PJob job = PJob.explorer;
     public Pathfinding pathfinding;
-    public bool doesJob = false;
+    //public bool doesJob = false;
+    Player player;
     public float moveSpeed = 30f;
     Coroutine coroutine;
     Coroutine jobRoutine;
@@ -20,6 +21,7 @@ public class UnitPathfinder : MonoBehaviour
     private void Start()
     {
         pathfinding = PathFindingTest.instance.pathfinding;
+        player = GetComponent<Player>();
     }
 
     void OnPathReceived(object pathData)
@@ -33,8 +35,8 @@ public class UnitPathfinder : MonoBehaviour
         }
         else
         {
-            doesJob = false;
-            Debug.Log($"{gameObject.name}, no path found!");
+            //doesJob = false;
+            //Debug.Log($"{gameObject.name}, no path found!");
         }
     }
     public void StartPathfinding(Vector3 position)
@@ -65,7 +67,7 @@ public class UnitPathfinder : MonoBehaviour
         return centerPos;
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -77,7 +79,7 @@ public class UnitPathfinder : MonoBehaviour
                 StartCoroutine(ExploreMap());
             }
         }
-    }
+    }*/
 
     private IEnumerator ExplorePosition(PathNode target)
     {
@@ -85,11 +87,9 @@ public class UnitPathfinder : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
                 yield return new WaitForSeconds(.5f);
-            if (job == PJob.explorer)
+            if (player.playerJob.activeJob == PJob.explorer)
             {
-                var p = GetComponent<Player>();
-                if (p != null)
-                    p.playerJob.GainXP(5);
+                player.playerJob.GainXP(5);
                 target.SetIsExplored();
             }
         }
@@ -100,7 +100,7 @@ public class UnitPathfinder : MonoBehaviour
 
     private IEnumerator ExploreMap()
     {
-        while (doesJob && job == PJob.explorer)
+        while (player.activeAction == ActiveAction.work && player.playerJob.activeJob == PJob.explorer)
         {
             if (jobRoutine == null && coroutine == null)
             {
@@ -111,11 +111,10 @@ public class UnitPathfinder : MonoBehaviour
                 }
                 else if (CheckNeighbours() == false)
                     if (SearchRadius() == false)
-                        doesJob = false;
+                        player.activeAction = ActiveAction.idle;
             }
             yield return new WaitForSeconds(.3f);
         }
-        //Debug.Log($"{gameObject.name} no more nodes to explore!");
     }
 
     private bool CheckNeighbours()

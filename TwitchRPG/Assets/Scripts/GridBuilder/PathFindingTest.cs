@@ -9,8 +9,8 @@ public class PathFindingTest : MonoBehaviour
 {
     public static PathFindingTest instance;
     public Pathfinding pathfinding;
-    public UnitPathfinder unit;
-    public UnitPathfinder unit2;
+    public Pathfinder unit;
+    public Pathfinder unit2;
     public bool debug = true;
     Coroutine coroutine;
     Coroutine coroutine2;
@@ -57,7 +57,7 @@ public class PathFindingTest : MonoBehaviour
             }
         }
         //tempList.ForEach(x => Debug.Log($"x: {x.x} y: {x.y} z: {x.z}"));
-        var units = FindObjectsOfType<UnitPathfinder>().ToList();
+        var units = FindObjectsOfType<Pathfinder>().ToList();
         units.ForEach(x => x.pathfinding = pathfinding);
         Debug.Log($"Finished Grid Buidling");
         StartCoroutine(ClearUnreachableList());
@@ -69,55 +69,54 @@ public class PathFindingTest : MonoBehaviour
         Debug.Log(middleOfMap);
         bool isGoodLocation = false;
         var x = middleOfMap;
-        var y = middleOfMap;
+        var z = middleOfMap;
         //Debug.Log(isGoodLocation);
         while (!isGoodLocation)
         {
-            isGoodLocation = CheckPositions(ref x, ref y);
+            isGoodLocation = CheckPositions(3, 3, ref x, ref z);
             if (!isGoodLocation)
                 Debug.Log($"Cannot spawn altar here!");
         }
         if (altarPrefab != null)
         {
-            var spawnPos = pathfinding.GetGrid().GetWorldPosition(x, y);
-            spawnPos.y = pathfinding.GetGrid().GetGridObject(x, y).y;
+            var spawnPos = pathfinding.GetGrid().GetWorldPosition(x, z);
+            spawnPos.y = pathfinding.GetGrid().GetGridObject(x, z).y;
             Instantiate(altarPrefab, spawnPos, Quaternion.identity);
-            MakeUnWalkable(x, y);
+            MakeUnWalkable(x, z);
         }
     }
 
-    private void MakeUnWalkable(int xPos, int yPos)
+    private void MakeUnWalkable(int xPos, int zPos)
     {
-        for (int y = 0; y < 2; y++)
+        for (int z = 0; z < 2; z++)
         {
             for (int x = 0; x < 3; x++)
             {
-                pathfinding.GetGrid().GetGridObject(xPos + x, yPos + y).isWalkable = false;
+                pathfinding.GetGrid().GetGridObject(xPos + x, zPos + z).isWalkable = false;
             }
         }
     }
 
-    private bool CheckPositions(ref int startX, ref int startY)
+    private bool CheckPositions(int xSize, int zSize, ref int startX, ref int startZ)
     {
-        bool check = false;
-        var mod = 0;
-        for (int i = 0; i < 3; i++)
+        int i = 0;
+        while (CheckCells(3, 3, startX, startZ) == false)
         {
-            if (check)
-                return true;
-            check = CheckCells(3, 2, startX + mod, startY);
-            startX += (i % 2 == 0 ? -3 : 3) * i;
-            startY += (i % 2 != 0 ? -2 : 2) * i;
+            Debug.Log($"Trying to place Altar");
+            startX += xSize * i;
+            startZ += zSize * i;
+            Debug.Log(i);
+                i++;
         }
-        return false;
+        return true;
     }
 
-    private bool CheckCells(int maxX, int maxY, int xPos, int yPos)
+    private bool CheckCells(int maxX, int maxZ, int xPos, int zPos)
     {
-        for (int y = 0; y < maxY; y++)
+        for (int z = -1; z < maxZ; z++)
             for (int x = 0; x < maxX; x++)
             {
-                if (!pathfinding.GetGrid().GetGridObject(xPos + x, yPos + y).isWalkable)
+                if (!pathfinding.GetGrid().GetGridObject(xPos + x, zPos + z).isWalkable)
                     return false;
             }
         return true;
@@ -133,7 +132,7 @@ public class PathFindingTest : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -150,7 +149,7 @@ public class PathFindingTest : MonoBehaviour
             if (wall == null || path == null) return;
             selected = selected == wall ? path : wall;
         }
-    }
+    }*/
 
     private Vector3 RayHitPosition()
     {
