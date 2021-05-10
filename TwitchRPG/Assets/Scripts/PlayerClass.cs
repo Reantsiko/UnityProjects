@@ -25,7 +25,7 @@ public class PlayerClass
         playerClass = new Dictionary<PClass, PlayerClassLevel>();
         var temp = System.Enum.GetValues(typeof(PClass)).Length;
         for (int i = 0; i < temp; i++)
-            playerClass.Add((PClass)i, new PlayerClassLevel(0, 0));
+            playerClass.Add((PClass)i, new PlayerClassLevel(1, 0));
         activeClass = selectedClass;
         CalculateExperienceForLevel();
     }

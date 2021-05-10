@@ -62,6 +62,8 @@ public class PathFindingTest : MonoBehaviour
         Debug.Log($"Finished Grid Buidling");
         StartCoroutine(ClearUnreachableList());
         SpawnAltar(61 / 2);
+        pathfinding.FilterObjectList();
+        Debug.Log(pathfinding.GetGrid().gridObjectsList.Count);
     }
 
     private void SpawnAltar(int middleOfMap)

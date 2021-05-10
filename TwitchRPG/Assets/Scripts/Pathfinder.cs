@@ -11,6 +11,7 @@ public class Pathfinder : MonoBehaviour
     Coroutine coroutine;
     Coroutine jobRoutine;
     PathNode target;
+    public Coroutine idleCoroutine;
     List<PathNode> PathFind(Vector3 position, Vector3 unitPosition)
     {
         pathfinding.GetGrid().GetXZ(position, out int x, out int z);
@@ -18,7 +19,7 @@ public class Pathfinder : MonoBehaviour
         return pathfinding.FindPath(sx, sz, x, z);
     }
 
-    private void Start()
+    public void SetupPathfinder()
     {
         pathfinding = PathFindingTest.instance.pathfinding;
         player = GetComponent<Player>();
@@ -35,6 +36,7 @@ public class Pathfinder : MonoBehaviour
         }
         else
         {
+            target = null;
             //doesJob = false;
             //Debug.Log($"{gameObject.name}, no path found!");
         }
@@ -43,6 +45,12 @@ public class Pathfinder : MonoBehaviour
     {
         var unitPosition = transform.position;
         ThreadedDataRequester.RequestData(() => PathFind(position, unitPosition), OnPathReceived);
+    }
+    public void StartPathfinding(PathNode target)
+    {
+        var unitPosition = transform.position;
+        var targetPos = new Vector3(target.x, target.y, target.z);
+        ThreadedDataRequester.RequestData(() => PathFind(targetPos, unitPosition), OnPathReceived);
     }
 
     IEnumerator WaitTillPointReached(List<PathNode> path)
@@ -57,6 +65,7 @@ public class Pathfinder : MonoBehaviour
             if (transform.position == GetPosition(current.x, current.z) && current != path[path.Count - 1])
                 current = path[++i];
         }
+        target = null;
         coroutine = null;
     }
     private Vector3 GetPosition(int x, int z)
@@ -81,13 +90,43 @@ public class Pathfinder : MonoBehaviour
         }
     }*/
 
+    public IEnumerator IdleRoutine()
+    {
+        target = null;
+        Debug.Log($"starting idle routine");
+        if (jobRoutine != null)
+        {
+            StopCoroutine(jobRoutine);
+            jobRoutine = null;
+        }
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+        WaitForSeconds wait = new WaitForSeconds(5f);
+        if (player == null)
+            player = GetComponent<Player>();
+        while (player.activeAction == ActiveAction.idle)
+        {
+            if (target == null && pathfinding.GetGrid().gridObjectsList != null)
+            {
+                int count = pathfinding.GetGrid().gridObjectsList.Count;
+                target = pathfinding.GetGrid().gridObjectsList[Random.Range(0, count)];
+                StartPathfinding(target);
+            }
+            yield return wait;
+        }
+
+    }
+
     private IEnumerator ExplorePosition(PathNode target)
     {
         if (target.GetIsUnexploredAndReachable())
         {
             for (int i = 0; i < 3; i++)
                 yield return new WaitForSeconds(.5f);
-            if (player.playerJob.activeJob == PJob.explorer)
+            if (player.playerJob.job == PJob.explorer)
             {
                 player.playerJob.GainXP(5);
                 target.SetIsExplored();
@@ -98,9 +137,20 @@ public class Pathfinder : MonoBehaviour
         jobRoutine = null;
     }
 
-    private IEnumerator ExploreMap()
+    public IEnumerator ExploreMap()
     {
-        while (player.activeAction == ActiveAction.work && player.playerJob.activeJob == PJob.explorer)
+        if (idleCoroutine != null)
+        {
+            StopCoroutine(idleCoroutine);
+            idleCoroutine = null;
+        }
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+        Debug.Log($"Starting work!");
+        while (player.activeAction == ActiveAction.work && player.playerJob.job == PJob.explorer)
         {
             if (jobRoutine == null && coroutine == null)
             {

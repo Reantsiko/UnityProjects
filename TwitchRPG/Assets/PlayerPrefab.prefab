@@ -50,6 +50,7 @@ MonoBehaviour:
   playerNameText: {fileID: 8749008549986672763}
   lastCommandTime: 0
   isOnline: 1
+  activeAction: 0
   playerStats:
     level: 0
     strength: 0
@@ -64,7 +65,10 @@ MonoBehaviour:
   playerClass:
     activeClass: 0
   playerJob:
-    activeJob: 0
+    job: 0
+    jobLevel:
+      level: 0
+      experience: 0
 --- !u!114 &6344992464124589585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,9 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ad7685d7b832d4aafe38a568242cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  job: 0
-  doesJob: 0
-  moveSpeed: 30
+  moveSpeed: 5
 --- !u!1 &2074813026468531727
 GameObject:
   m_ObjectHideFlags: 0

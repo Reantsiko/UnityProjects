@@ -61,15 +61,15 @@ public class Commands : MonoBehaviour
         var selectedPlayer = GamePlayers.instance.createdPlayers[userName];
         client.BotSendMessage(userName, $"{selectedPlayer.displayName} your active class is {selectedPlayer.playerClass.activeClass} " +
             $"and is level {selectedPlayer.playerClass.playerClass[selectedPlayer.playerClass.activeClass].level}", false);
-        client.BotSendMessage(userName, $"{selectedPlayer.displayName} your active class is {selectedPlayer.playerJob.activeJob} " +
-            $"and is level {selectedPlayer.playerJob.playerJob[selectedPlayer.playerJob.activeJob].level}", false);
+        client.BotSendMessage(userName, $"{selectedPlayer.displayName} your active class is {selectedPlayer.playerJob.job} " +
+            $"and is level {selectedPlayer.playerJob?.jobLevel.level}", false);
     }
 
     public void SetJob(string userName, string[] splitMessage)
     {
         if (!CheckPlayerAndMessageLength(userName, splitMessage.Length, 2)) return;
         var player = GamePlayers.instance.createdPlayers[userName];
-        if (GamePlayers.instance.createdPlayers[userName].playerJob.activeJob != PJob.none)
+        if (GamePlayers.instance.createdPlayers[userName].playerJob.job != PJob.none)
         {
             client.BotSendMessage(userName, $"{player.displayName} you already have a job!", false);
             return;
@@ -81,7 +81,7 @@ public class Commands : MonoBehaviour
             client.BotSendMessage(userName, $"{player.displayName} the inputted job does not exist!", false);
             return;
         }
-        player.playerJob.SetPlayerJob((PJob)jobValue);  
+        player.SetJob((PJob)jobValue);  
     }
     public void SetClass(string userName, string[] splitMessage)
     {
@@ -104,10 +104,28 @@ public class Commands : MonoBehaviour
         var index = parser.playerActions.IndexOf(splitMessage[1]);
         if (index < 0) return;
         var player = GamePlayers.instance.createdPlayers[userName];
-        if ((ActiveAction)index == ActiveAction.work && player.playerJob.activeJob == PJob.none)
+        if ((ActiveAction)index == ActiveAction.work && player.playerJob.job == PJob.none)
             client.BotSendMessage(userName, $"{userName}, you have no job, set a job if you want to use this action!", false);
         else
+        {
             player.activeAction = (ActiveAction)index;
+            StartAction(player);
+        }
+    }
+
+    private void StartAction(Player player)
+    {
+        switch (player.activeAction)
+        {
+            case ActiveAction.idle:
+                player.StartIdle();
+                break;
+            case ActiveAction.work:
+                player.StartJob();
+                break;
+            case ActiveAction.fight:
+                break;
+        }
     }
 
     private bool CheckPlayerAndMessageLength(string userName, int messageAmount, int messageAmountNeeded, bool isNew = false)

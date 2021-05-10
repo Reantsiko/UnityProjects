@@ -18,7 +18,7 @@ public class GridBuilder<TGridObject> {
     private Vector3 originPosition;
     private TGridObject[,] gridArray;
     private bool debug;
-
+    public List<TGridObject> gridObjectsList;
     public TGridObject[,] GetGridArray() => gridArray;
     public TGridObject FindUnexplored()
     {
@@ -33,12 +33,14 @@ public class GridBuilder<TGridObject> {
         debug = _debug;
 
         gridArray = new TGridObject[width, depth];
-
+        gridObjectsList = new List<TGridObject>();
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int z = 0; z < gridArray.GetLength(1); z++)
             {
-                gridArray[x, z] = createGridObject(this, x, z);
+                var temp = createGridObject(this, x, z);
+                gridArray[x, z] = temp;
+                gridObjectsList.Add(temp);
             }
         }
 

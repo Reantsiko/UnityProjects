@@ -15,6 +15,12 @@ public class Pathfinding
     }
     public GridBuilder<PathNode> GetGrid() => grid;
 
+    public void FilterObjectList()
+    {
+        var toRemove = grid.gridObjectsList.Where(x => !x.isWalkable).ToList();
+        toRemove.ForEach(x => grid.gridObjectsList.Remove(x));
+    }
+
     public List<PathNode> FindPath(int startX, int startZ, int endX, int endZ)
     {
         var startNode = grid.GetGridObject(startX, startZ);
@@ -74,18 +80,18 @@ public class Pathfinding
         startNode.CalculateFCost();
     }
 
-    private void CheckNeighbours(PathNode currentNode, PathNode endNode, ref List<PathNode> openList, ref List<PathNode> closedList)
+    private void CheckNeighbours(PathNode currentNode, PathNode endNode, /*bool hasBoat, */ref List<PathNode> openList, ref List<PathNode> closedList)
     {
         if (currentNode == null || endNode == null) return;
         foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
         {
             if (closedList.Contains(neighbourNode))
                 continue;
-            /*if (!neighbourNode.isWalkable && neighbourNode.isWater && player has boat)
+            /*if (!neighbourNode.isWalkable && neighbourNode.isWater && hasBoat)
             {
 
             }
-            else*/ if (!neighbourNode.isWalkable)
+            else */if (!neighbourNode.isWalkable)
             {
                 closedList.Add(neighbourNode);
                 continue;
