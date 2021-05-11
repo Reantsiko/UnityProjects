@@ -57,10 +57,8 @@ public class PathFindingTest : MonoBehaviour
                 var instance = Instantiate(selected, location, Quaternion.identity);
                 pathfinding.GetGrid().GetGridObject(location).ChangePlacedObject(instance, out GameObject toRemove);
                 if (toRemove != null)
-                    Destroy(toRemove);
-                
+                    Destroy(toRemove);   
             }
-            Debug.Log(location);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {

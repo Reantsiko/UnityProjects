@@ -11,6 +11,12 @@ public class HeightMapSettings : UpdateableData
     public float heightMultiplier;
     public AnimationCurve heightCurve;
 
+    private void Awake()
+    {
+        if (noiseSettings.seed == 0)
+            noiseSettings.seed = Random.Range(1, 1001);
+    }
+
     public float minHeight
     {
         get => heightMultiplier * heightCurve.Evaluate(0);

@@ -62,7 +62,6 @@ public class PathFindingTest : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             var position = RayHitPosition();
-            //pathfinding.GetGrid().GetGridObject(position).isWalkable = !///pathfinding.GetGrid().GetGridObject(mouseWorldPosition).modifier = 6;
             pathfinding.GetGrid().GetXZ(position, out int x, out int z);
             
             if (x < 0 || z < 0) return;

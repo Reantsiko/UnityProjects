@@ -8,7 +8,6 @@ public static class HeightMapGenerator
     {
         float[,] values = Noise.GenerateNoiseMap(width, height, settings.noiseSettings, sampleCenter);
         var heightCurve_threadsafe = new AnimationCurve(settings.heightCurve.keys);
-
         float minValue = float.MaxValue;
         float maxValue = float.MinValue;
         for (int i = 0; i < width; i++)
