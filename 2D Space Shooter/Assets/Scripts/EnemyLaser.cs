@@ -7,7 +7,9 @@ public class EnemyLaser : MonoBehaviour
     public float damage = 0.1f;
     [SerializeField] private float moveSpeed = 5f;
 
-    private Vector2 fireDirection = Vector2.down;
+    [SerializeField] private float screenXLimit = 10f;
+    [SerializeField] private float screenYLimit = 5.5f;
+    [SerializeField] private Vector2 fireDirection = Vector2.left;
     
     public void FireAtPlayer() => fireDirection = (GameManager.instance.playerTransform.position - transform.localPosition).normalized;
 
@@ -15,7 +17,8 @@ public class EnemyLaser : MonoBehaviour
     {
         transform.Translate(fireDirection * moveSpeed * Time.deltaTime);
 
-        if (transform.position.y >= 20f || transform.position.y <= -7f)
+        if (transform.position.y >= screenYLimit || transform.position.y <= -screenYLimit ||
+            transform.position.x >= screenXLimit || transform.position.x <= -screenXLimit)
             Destroy(gameObject);
     }
 }
