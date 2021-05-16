@@ -10,8 +10,8 @@ public class PathCreator : MonoBehaviour
     [SerializeField] private int maxPaths = 50;
     [SerializeField]
     [Range(0f,1f)] private float returnSameSideChance = 0.25f;
-    [SerializeField] private Transform leftSide;
-    [SerializeField] private Transform rightSide;
+    [SerializeField] private Transform topSide;
+    [SerializeField] private Transform bottomSide;
     [SerializeField] private Transform[] columns;
     [SerializeField] private HashSet<List<Transform>> generatedPathing = new HashSet<List<Transform>>();
 
@@ -29,8 +29,8 @@ public class PathCreator : MonoBehaviour
     {
         List<Transform> path = new List<Transform>();
         var wayPointAmount = Random.Range(minPoints, maxPoints + 1);
-        var left = leftSide.GetComponentsInChildren<Transform>();
-        var right = rightSide.GetComponentsInChildren<Transform>();
+        var left = topSide.GetComponentsInChildren<Transform>();
+        var right = bottomSide.GetComponentsInChildren<Transform>();
         var startLeft = Random.Range(0, 2) == 0 ? true : false;
         path.Add(startLeft == true ? left[Random.Range(0, left.Length)] : right[Random.Range(0, right.Length)]);
         for (int i = 0; i < wayPointAmount - 2; i++)

@@ -47,9 +47,7 @@ public class PowerUpUI : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
         if (isBomb)
-        {
             bombWordDisplay.text = slider.GetComponentInChildren<TMP_Text>();
-        }
         else
             shieldWordDisplay.text = slider.GetComponentInChildren<TMP_Text>();
         CheckNextCharge(isBomb);
@@ -69,9 +67,7 @@ public class PowerUpUI : MonoBehaviour
         {
             shieldAmount++;
             if (shieldAmount + 1 < shieldSliders.Length)
-            {       
                 shieldCharge = StartCoroutine(SliderCharge(shieldSliders[shieldAmount + 1], shieldRechargeTimer, false));
-            }
             else
                 shieldCharge = null;
         }

@@ -13,7 +13,6 @@ public class PlayerLaser : MonoBehaviour
         if (target == null)
             Destroy(gameObject);
         transform.position = Vector3.MoveTowards(transform.position, target == null ? Vector3.zero : target.position, speed * Time.deltaTime);
-
         if (transform.position.y >= 20f || transform.position.y <= -7f)
             Destroy(gameObject);
     }
@@ -25,6 +24,9 @@ public class PlayerLaser : MonoBehaviour
             collision.GetComponent<WordDisplay>().RemoveWord();
             VFXPool.instance.Spawn(collision.transform.position);
             SoundPool.instance.Spawn(collision.transform.position, explosionRef);
+            var enemyAtt = collision.GetComponent<EnemyAttack>()?.GetFireAtPlayer();
+            if (enemyAtt != null)
+                StopCoroutine(enemyAtt);
             Destroy(gameObject);
         }
     }

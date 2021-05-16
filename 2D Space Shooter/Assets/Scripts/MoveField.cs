@@ -7,7 +7,7 @@ public class MoveField : MonoBehaviour
     public static MoveField instance = null;
     [SerializeField] private int width = 1;
     [SerializeField] private int height = 1;
-    [SerializeField] private int currAllowedHeight = 2;
+    [SerializeField] private int currAllowedWidth = 2;
     [SerializeField] private float cellSize = 1;
     [SerializeField] private bool is2D = false;
     [SerializeField] private bool debug = false;
@@ -32,17 +32,6 @@ public class MoveField : MonoBehaviour
         instance = this;
         wordManager = FindObjectOfType<WordManager>();
         moveableField = new Grid<bool>(width, height, cellSize, transform.position, is2D, debug, default);
-        /*for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < currAllowedHeight; y++)
-            {
-                if (!CheckPlayerPos(x, y))
-                {
-                    wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));
-                    moveableField.SetGridObject(x, y, true);
-                }
-            }
-        }*/
         StartCoroutine(WaitForSpawnNewMovementWord());
     }
 
@@ -78,8 +67,8 @@ public class MoveField : MonoBehaviour
         /*var temp = moveableField.GetGridObject(xPos, yPos);
         Debug.Log(temp);
         if (moveableField.GetGridObject(xPos, yPos) == default)*/
-        var x = Random.Range(0, width);
-        var y = Random.Range(0, currAllowedHeight);
+        var x = Random.Range(0, currAllowedWidth);
+        var y = Random.Range(0, height);
         if (!CheckPlayerPos(x, y) && moveableField.GetGridObject(x, y) == false)
         {
             wordManager.AddMovementWord(moveableField.GetCenterOfCell2D(x, y));

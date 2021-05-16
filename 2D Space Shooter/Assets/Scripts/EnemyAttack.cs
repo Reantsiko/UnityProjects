@@ -9,17 +9,23 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] private float minAttackWaitTime = 1f;
     [SerializeField] private float maxAttackWaitTime = 5f;
     [SerializeField] private string soundReference = null;
+    private Coroutine fireAtPlayer = null;
     private void Start()
     {
         if (CheckAttack(Random.Range(0.00f, 1f)))
-            StartCoroutine(AttackDelay(Random.Range(minAttackWaitTime, maxAttackWaitTime)));
+            fireAtPlayer = StartCoroutine(AttackDelay(Random.Range(minAttackWaitTime, maxAttackWaitTime)));
     }
+
+    public Coroutine GetFireAtPlayer() => fireAtPlayer;
 
     private IEnumerator AttackDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
-        Instantiate(laserPrefab, firePosition.position, Quaternion.identity);
-        SoundPool.instance.Spawn(transform.position);
+        while (true)
+        {
+            yield return new WaitForSeconds(delay);
+            Instantiate(laserPrefab, firePosition.position, Quaternion.identity);
+            SoundPool.instance.Spawn(transform.position);
+        }
     }
 
     private bool CheckAttack(float val)
@@ -27,9 +33,9 @@ public class EnemyAttack : MonoBehaviour
         switch (GameManager.instance.difficulty)
         {
             case Difficulty.VeryEasy:
-                return val < 0.05f;
-            case Difficulty.Easy:
                 return val < 0.1f;
+            case Difficulty.Easy:
+                return val < 0.15f;
             case Difficulty.Normal:
                 return val < 0.2f;
             case Difficulty.Hard:

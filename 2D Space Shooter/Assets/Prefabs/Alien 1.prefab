@@ -473,6 +473,6 @@ MonoBehaviour:
   firePosition: {fileID: 3427401214869262044}
   laserPrefab: {fileID: 6098133262748962048, guid: 8e29b9c380d6893448a8da11bee1766d,
     type: 3}
-  minAttackWaitTime: 1
-  maxAttackWaitTime: 5
+  minAttackWaitTime: 1.5
+  maxAttackWaitTime: 4
   soundReference: Laser Sound Effect
